@@ -12,6 +12,7 @@ namespace DGPub.Domain.Tabs
         public Guid ItemId { get; private set; }
         public virtual Item Item { get; private set; }
         public Guid TabId { get; private set; }
+        public Tab Tab { get; private set; }
 
         public override bool IsValid()
         {

@@ -1,5 +1,7 @@
 ﻿using DGPub.Domain.Items;
 using DGPub.Domain.Tabs;
+using DGPub.Infra.Data.Extensions;
+using DGPub.Infra.Data.Mappings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
@@ -14,6 +16,9 @@ namespace DGPub.Infra.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.AddConfiguration(new ItemMap());
+            modelBuilder.AddConfiguration(new ItemTabMap());
+            modelBuilder.AddConfiguration(new TabMap());
             base.OnModelCreating(modelBuilder);
         }
 
