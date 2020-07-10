@@ -13,20 +13,17 @@ namespace DGPub.Application.Tabs.Handlers
 {
     public class TabHandler : AddItemTabHandler,
         ICreateTabHandler
-    {
-        private readonly IAddItemTabHandler _addItemHandler;
+    {        
         private readonly ITabRepository _tabRepository;
         private readonly IPromotionHandler _promotionHandler;
 
-        public TabHandler(
-            IAddItemTabHandler addItemHandler,
+        public TabHandler(            
             ITabRepository tabRepository,
             IUnitOfWork uow,
             IItemRepository itemRepository,
             IItemTabRepository itemTabRepository,
             IPromotionHandler promotionHandler) : base(uow, itemRepository, itemTabRepository, tabRepository)
-        {
-            _addItemHandler = addItemHandler;
+        {            
             _tabRepository = tabRepository;
             _promotionHandler = promotionHandler;
         }
