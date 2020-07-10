@@ -1,9 +1,15 @@
-﻿using DGPub.Application.Promotions.Handlers;
-using DGPub.Application.Tabs.Handlers;
-using DGPub.Domain.Promotions.Handlers;
+﻿using DGPub.Application.Tabs.Handlers;
+using DGPub.Domain.Items.Repositories;
 using DGPub.Domain.Tabs.Handlers;
+using DGPub.Domain.Tabs.Repositories;
 using Microsoft.Extensions.DependencyInjection;
-using System;
+using DGPub.Infra.Data.Repositories.Tabs;
+using DGPub.Infra.Data.Repositories.Items;
+using DGPub.Infra.Data.Context;
+using DGPub.Infra.Data.UoW;
+using DGPub.Domain.Core;
+using DGPub.Application.Promotions.Handlers;
+using DGPub.Domain.Promotions.Handlers;
 
 namespace DGPub.Infra.CrossCutting.IoC
 {
@@ -15,12 +21,16 @@ namespace DGPub.Infra.CrossCutting.IoC
             //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //Repositories
+            services.AddScoped<IItemRepository, ItemRepository>();
+            services.AddScoped<IItemTabRepository, ItemTabRepository>();
+            services.AddScoped<ITabRepository, TabRepository>();
+            services.AddScoped<DGPubContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             //Handlers
             services.AddScoped<IAddItemTabHandler, AddItemTabHandler>();
             services.AddScoped<ICreateTabHandler, TabHandler>();
-
-            //services.AddScoped<IPromotionHandler>();
+            services.AddScoped<IPromotionHandler, PromotionHandler>();
 
            
 

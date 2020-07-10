@@ -4,6 +4,7 @@ using DGPub.Infra.Data.Extensions;
 using DGPub.Infra.Data.Mappings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.IO;
 
 namespace DGPub.Infra.Data.Context
@@ -17,6 +18,15 @@ namespace DGPub.Infra.Data.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.AddConfiguration(new ItemMap());
+
+            modelBuilder.Entity<Item>().HasData(
+                 Domain.Items.Item.ItemFactory.Create("Cerveja", 5),
+                 Domain.Items.Item.ItemFactory.Create("Conhaque", 20),
+                 Domain.Items.Item.ItemFactory.Create("Suco", 50),
+                 Domain.Items.Item.ItemFactory.Create("Água", 70)
+              );
+
+
             modelBuilder.AddConfiguration(new ItemTabMap());
             modelBuilder.AddConfiguration(new TabMap());
             base.OnModelCreating(modelBuilder);
