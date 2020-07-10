@@ -8,4 +8,10 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DGPub.Application\DGPub.Application.csproj" />
+    <ProjectReference Include="..\DGPub.Domain.Core\DGPub.Domain.Core.csproj" />
+    <ProjectReference Include="..\DGPub.Domain\DGPub.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
