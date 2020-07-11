@@ -20,9 +20,9 @@ namespace DGPub.Domain.Tabs.Handlers
             _tabRepository = tabRepository;
         }
 
-        public virtual Task<UpdatedTabEvent> Handler(AddItemTabCommand command)
+        public virtual async Task<Event<UpdatedTabEvent>> Handler(AddItemTabCommand command)
         {
-            if (command.IsValid())
+            if (!command.IsValid())
                 return null;
 
             var itemTab = _itemTabRepository.FindByIdAndTab(command.ItemId, command.TabId);
@@ -34,7 +34,7 @@ namespace DGPub.Domain.Tabs.Handlers
                 return null;
 
             var tab = _tabRepository.FindById(command.TabId);
-            return Task.FromResult(new UpdatedTabEvent(tab));
+            return Event<UpdatedTabEvent>.CreateSuccess(new UpdatedTabEvent(tab)); 
         }
 
         protected Event<None> AddItem(AddItemTabCommand command)
@@ -49,7 +49,7 @@ namespace DGPub.Domain.Tabs.Handlers
 
             _itemTabRepository.Add(itemTab);
 
-            return None.Create();
+            return Event<None>.CreateSuccess(None.Create());
         }
 
         protected Event<None> UpdateItem(ItemTab itemTab, AddItemTabCommand command)
@@ -60,7 +60,7 @@ namespace DGPub.Domain.Tabs.Handlers
 
             _itemTabRepository.Update(itemTab);
 
-            return None.Create();
+            return Event<None>.CreateSuccess(None.Create());
         }
 
 

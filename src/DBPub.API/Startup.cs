@@ -31,6 +31,11 @@ namespace DBPub.API
 
             services.AddSwaggerConfig();
 
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
             NativeInjectorBootStrapper.RegisterServices(services);
         }
 

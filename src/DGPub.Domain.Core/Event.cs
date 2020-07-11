@@ -4,14 +4,16 @@ namespace DGPub.Domain.Core
 {
     public class EventBase
     {
+
+    }
+
+    public class Event<T> : EventBase where T : EventBase
+    {
+        public T Value { get; set; }
+
         public bool Valid { get; set; }
 
         public string Error { get; set; }
-    }
-
-    public class Event<T> : EventBase
-    {
-        public T Value { get; set; }
 
         public static Event<T> CreateSuccess(T value)
         {
@@ -33,10 +35,10 @@ namespace DGPub.Domain.Core
             };
         }
 
-        public static implicit operator Event<T>(T value) => CreateSuccess(value);
+        //  public static implicit operator Event<T>(T value) => CreateSuccess(value);
     }
 
-    public struct None
+    public class None : EventBase
     {
         public static None Create()
         {

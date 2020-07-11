@@ -29,7 +29,7 @@ namespace DGPub.Infra.CrossCutting.IoC
 
             //Handlers
             services.AddScoped<IAddItemTabHandler, AddItemTabHandler>();
-            services.AddScoped<ICreateTabHandler, TabHandler>();
+            services.AddScoped<ITabHandler, TabHandler>();
             services.AddScoped<IPromotionHandler, PromotionHandler>();
 
            

@@ -39,7 +39,7 @@ namespace DGPub.Infra.Data.Context
              .AddJsonFile("appsettings.json")
              .Build();
 
-            optionsBuilder.UseSqlite(config.GetConnectionString("SqliteConnectionString"));
+            optionsBuilder.UseSqlite(config.GetConnectionString("DefaultConnection"));
         }
     }
 }

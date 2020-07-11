@@ -11,24 +11,33 @@ using System.Threading.Tasks;
 
 namespace DGPub.Application.Tabs.Handlers
 {
-    public class TabHandler : AddItemTabHandler,
-        ICreateTabHandler
-    {        
+    public abstract class ITabHandler : AddItemTabHandler, ICreateTabHandler
+    {
+        public ITabHandler(IUnitOfWork uow, IItemRepository itemRepository, IItemTabRepository itemTabRepository, ITabRepository tabRepository)
+            : base(uow, itemRepository, itemTabRepository, tabRepository)
+        {
+        }
+
+        public abstract Task<Event<CreateTabEvent>> Handler(CreateTabCommand command);
+    }
+
+    public class TabHandler : ITabHandler
+    {
         private readonly ITabRepository _tabRepository;
         private readonly IPromotionHandler _promotionHandler;
 
-        public TabHandler(            
+        public TabHandler(
             ITabRepository tabRepository,
             IUnitOfWork uow,
             IItemRepository itemRepository,
             IItemTabRepository itemTabRepository,
             IPromotionHandler promotionHandler) : base(uow, itemRepository, itemTabRepository, tabRepository)
-        {            
+        {
             _tabRepository = tabRepository;
             _promotionHandler = promotionHandler;
         }
 
-        public Task<CreateTabEvent> Handler(CreateTabCommand command)
+        public override async Task<Event<CreateTabEvent>> Handler(CreateTabCommand command)
         {
             //TODO 
             if (!command.IsValid())
@@ -42,21 +51,22 @@ namespace DGPub.Application.Tabs.Handlers
 
             _tabRepository.Add(tab);
 
-            if (Commit())
-            { }
+            if (!Commit())
+                return null;
 
-            return null;
+
+            return Event<CreateTabEvent>.CreateSuccess(new CreateTabEvent(tab.Id, tab.CustomerName));
         }
 
-        public override async Task<UpdatedTabEvent> Handler(AddItemTabCommand command)
+        public override async Task<Event<UpdatedTabEvent>> Handler(AddItemTabCommand command)
         {
             var result = await base.Handler(command);
             if (!result.Valid)
                 return result;
 
-            var resultPromotion = await _promotionHandler.Handler(new Domain.Promotions.Commands.PromotionCommand(result.Tab.Id));
+            var resultPromotion = await _promotionHandler.Handler(new Domain.Promotions.Commands.PromotionCommand(result.Value.Tab.Id));
 
-            return new UpdatedTabEvent(resultPromotion.Tab);
-        }
+            return Event<UpdatedTabEvent>.CreateSuccess(new UpdatedTabEvent(resultPromotion.Tab));
+        }        
     }
 }
