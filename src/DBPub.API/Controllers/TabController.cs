@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using DBPub.API.ViewModels;
 using DGPub.Application.Tabs.Handlers;
+using DGPub.Domain.Core;
 using DGPub.Domain.Tabs;
 using DGPub.Domain.Tabs.Commands;
 using DGPub.Domain.Tabs.Repositories;
@@ -17,7 +18,7 @@ namespace DBPub.API.Controllers
         private readonly ITabHandler _tabHandler;
         private readonly ITabRepository _tabRepository;
 
-        public TabController(ITabHandler tabHandler, ITabRepository tabRepository)
+        public TabController(ITabHandler tabHandler, ITabRepository tabRepository, IUser user) : base(user)
         {
             _tabHandler = tabHandler;
             _tabRepository = tabRepository;

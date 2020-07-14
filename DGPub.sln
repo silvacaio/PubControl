@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBPub.API", "src\DBPub.API\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DGPub.Application.Tests", "test\DGPub.Application.Tests\DGPub.Application.Tests.csproj", "{90F3CACB-15DA-4171-BD43-D68AEA5E83DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DGPub.Infra.CrossCutting.Identity", "src\DGPub.Infra.CrossCutting.Identity\DGPub.Infra.CrossCutting.Identity.csproj", "{2454CECB-1085-45AA-9A0C-1F0A46E07DF6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{90F3CACB-15DA-4171-BD43-D68AEA5E83DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90F3CACB-15DA-4171-BD43-D68AEA5E83DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90F3CACB-15DA-4171-BD43-D68AEA5E83DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2454CECB-1085-45AA-9A0C-1F0A46E07DF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2454CECB-1085-45AA-9A0C-1F0A46E07DF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2454CECB-1085-45AA-9A0C-1F0A46E07DF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2454CECB-1085-45AA-9A0C-1F0A46E07DF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +85,7 @@ Global
 		{27DCE941-2E3F-464F-A0FB-D08B6DE8E2BA} = {81F562AF-F56B-4640-862C-F0C632F14143}
 		{E75BA4DC-7A66-46F2-B960-19A19C93B65F} = {FEEDCB0A-4A1B-4575-8217-BB28DEB2B886}
 		{90F3CACB-15DA-4171-BD43-D68AEA5E83DA} = {2A14C7C1-D72F-42F8-A8E3-CE71FA0B8A03}
+		{2454CECB-1085-45AA-9A0C-1F0A46E07DF6} = {3D482901-0C71-4945-AC8B-2F39AF226549}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49DD5632-6C6B-45E8-85F8-DB2CFBA123D3}

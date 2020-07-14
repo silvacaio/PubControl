@@ -1,4 +1,5 @@
-﻿using DGPub.Domain.Items;
+﻿using DGPub.Domain.Core;
+using DGPub.Domain.Items;
 using DGPub.Domain.Items.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,7 +13,7 @@ namespace DBPub.API.Controllers
     {
         private readonly IItemRepository _itemRepository;
 
-        public ItemController(IItemRepository itemRepository)
+        public ItemController(IItemRepository itemRepository, IUser user) : base(user)
         {
             _itemRepository = itemRepository;
         }

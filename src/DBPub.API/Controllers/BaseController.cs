@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DGPub.Domain.Core;
+using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace DBPub.API.Controllers
@@ -6,16 +7,12 @@ namespace DBPub.API.Controllers
     [ApiController]
     public class BaseController : ControllerBase
     {
-        public BaseController(                           //  IUser user
-                              )
+        public BaseController(IUser user)
         {
-            //_notifications = (DomainNotificationHandler)notifications;
-            // _mediator = mediator;
-
-            //if (user.IsAuthenticated())
-            //{
-            //    UserId = user.GetUserId();
-            //}
+            if (user.IsAuthenticated())
+            {
+                UserId = user.GetUserId();
+            }
         }
 
         protected Guid UserId { get; set; }
@@ -36,6 +33,11 @@ namespace DBPub.API.Controllers
                 success = false,
                 errors
             });
+        }
+
+        protected IActionResult ErrorResponse(string error)
+        {
+            return ErrorResponse(new string[1] { error });
         }
 
         protected bool ModelStateIsValid()
