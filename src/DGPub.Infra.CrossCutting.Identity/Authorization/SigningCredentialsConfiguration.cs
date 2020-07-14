@@ -1,6 +1,4 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace DGPub.Infra.CrossCutting.Identity.Authorization
@@ -8,7 +6,7 @@ namespace DGPub.Infra.CrossCutting.Identity.Authorization
     public class SigningCredentialsConfiguration
     {
         // poderia estar em um Azure Key Vault
-        private const string SecretKey = "dgpub@teste";
+        private const string SecretKey = "dgpub@developertest";
         public static readonly SymmetricSecurityKey Key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
         public SigningCredentials SigningCredentials { get; }
 

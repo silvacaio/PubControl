@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using DBPub.API.Configurations;
 using DGPub.Infra.CrossCutting.Identity.Data;
 using DGPub.Infra.CrossCutting.IoC;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +24,13 @@ namespace DBPub.API
     {
         public Startup(IConfiguration configuration)
         {
+            //var builder = new ConfigurationBuilder()
+            // .SetBasePath(env.ContentRootPath)
+            // .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            // .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+            // .AddEnvironmentVariables();
+
+            //Configuration = builder.Build();
             Configuration = configuration;
         }
 
@@ -36,21 +46,29 @@ namespace DBPub.API
             // Configurações de Autenticação, Autorização e JWT.
             services.AddMvcSecurity(Configuration);
 
-            services.AddControllers();
+            // Options para configurações customizadas
+            services.AddOptions();
 
+            // MVC com restrição de XML e adição de filtro de ações.
+            services.AddMvc(config =>
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+
+                config.Filters.Add(new AuthorizeFilter(policy));
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            // Configurações do Swagger
             services.AddSwaggerConfig();
-
-            services.AddControllersWithViews()
-                .AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
 
             NativeInjectorBootStrapper.RegisterServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
         {
+
             #region Configurações MVC
 
             app.UseCors(c =>
@@ -61,29 +79,25 @@ namespace DBPub.API
             });
 
             app.UseStaticFiles();
-            app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseMvc();
+            //  app.UseHttpsRedirection();
+
             #endregion
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-
             #region Swagger
+
+            if (env.IsProduction())
+            {
+                // Se não tiver um token válido no browser não funciona.
+                // Descomente para ativar a segurança.
+                // app.UseSwaggerAuthorized();
+            }
 
             app.UseSwagger();
             app.UseSwaggerUI(s =>
             {
-                s.SwaggerEndpoint("/swagger/v1/swagger.json", "DGPub API v1.0");
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "DBPub.IO API v1.0");
             });
 
             #endregion

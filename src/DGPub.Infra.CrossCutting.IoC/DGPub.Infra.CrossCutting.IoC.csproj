@@ -1,17 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.5" />
+    
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DGPub.Application\DGPub.Application.csproj" />
     <ProjectReference Include="..\DGPub.Domain.Core\DGPub.Domain.Core.csproj" />
     <ProjectReference Include="..\DGPub.Domain\DGPub.Domain.csproj" />
+    <ProjectReference Include="..\DGPub.Infra.CrossCutting.Identity\DGPub.Infra.CrossCutting.Identity.csproj" />
     <ProjectReference Include="..\DGPub.Infra.Data\DGPub.Infra.Data.csproj" />
   </ItemGroup>
 

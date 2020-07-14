@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DGPub.Infra.Data.Migrations
 {
-    public partial class StartSqlDatabase : Migration
+    public partial class StartDataBase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -65,10 +65,10 @@ namespace DGPub.Infra.Data.Migrations
                 columns: new[] { "Id", "Name", "Price" },
                 values: new object[,]
                 {
-                    { new Guid("61e2d6a1-f060-4293-978b-28ffc05842e1"), "Cerveja", 5m },
-                    { new Guid("02e617c3-6675-447c-96d1-a41bfefd426d"), "Conhaque", 20m },
-                    { new Guid("38184383-6e55-4464-9010-4242e3777a2c"), "Suco", 50m },
-                    { new Guid("5db8dfb6-baaa-460f-8c02-5249a47abd1f"), "Água", 70m }
+                    { new Guid("e53890e8-3c5b-4343-987d-ff9ebb63edce"), "Cerveja", 5m },
+                    { new Guid("09229e4c-5d04-410c-a0b1-eb064b3aed1b"), "Conhaque", 20m },
+                    { new Guid("fd1a1612-50b2-44e8-8563-b4e51b27ff73"), "Suco", 50m },
+                    { new Guid("f07ee6ea-2b64-4d41-b6e7-bb5a50d87329"), "Água", 70m }
                 });
 
             migrationBuilder.CreateIndex(

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -24,13 +25,11 @@ namespace DBPub.API.Controllers
                     UserManager<ApplicationUser> userManager,
                     SignInManager<ApplicationUser> signInManager,
                     TokenDescriptor tokenDescriptor,
-                    IUser user//,
-                              //    IOrganizadorRepository organizadorRepository
+                    IUser user                              
             ) : base(user)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
-            //   _organizadorRepository = organizadorRepository;           
+            _signInManager = signInManager;            
             _tokenDescriptor = tokenDescriptor;
         }
 
@@ -39,30 +38,37 @@ namespace DBPub.API.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("nova-conta")]
+        [Route("new")]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return ErrorResponse("Dados inválidos");
+                if (!ModelState.IsValid)
+                {
+                    return ErrorResponse("Dados inválidos");
+                }
+
+                var user = new ApplicationUser { UserName = model.Nome, Email = model.Email };
+
+                var result = await _userManager.CreateAsync(user, model.Senha);
+
+                if (result.Succeeded)
+                {
+                    var response = await GerarTokenUsuario(new LoginViewModel { Email = model.Email, Senha = model.Senha });
+                    return SuccessResponse(response);
+                }
+
+                return ErrorResponse(result.Errors.Select(e => e.Description).ToArray());
             }
-
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-
-            var result = await _userManager.CreateAsync(user, model.Senha);
-
-            if (result.Succeeded)
+            catch (Exception e)
             {
-                var response = GerarTokenUsuario(new LoginViewModel { Email = model.Email, Senha = model.Senha });
-                return SuccessResponse(response);
+                return ErrorResponse(e.Message);
             }
-           
-            return ErrorResponse("Dados inválidos");
         }
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("conta")]
+        [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
             if (!ModelState.IsValid)
@@ -107,7 +113,7 @@ namespace DBPub.API.Controllers
                 Expires = DateTime.Now.AddMinutes(_tokenDescriptor.MinutesValid)
             });
 
-            var encodedJwt = handler.WriteToken(securityToken);            
+            var encodedJwt = handler.WriteToken(securityToken);
 
             var response = new
             {

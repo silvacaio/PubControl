@@ -23,7 +23,7 @@ namespace DGPub.Infra.Data.Repositories.Tabs
                 .FirstOrDefault(a => a.Id == id);
         }
 
-        public Tab FindById(Guid id, bool withItems)
+        public Tab FindById(Guid id)
         {
             return Db.Tab.AsNoTracking()
                 .Include(a => a.Items)

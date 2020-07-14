@@ -8,11 +8,13 @@ using DGPub.Domain.Core;
 using DGPub.Domain.Tabs;
 using DGPub.Domain.Tabs.Commands;
 using DGPub.Domain.Tabs.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DBPub.API.Controllers
 {
     [ApiController]
+    [Authorize]
     public class TabController : BaseController
     {
         private readonly ITabHandler _tabHandler;

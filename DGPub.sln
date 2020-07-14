@@ -29,9 +29,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGPub.Infra.Data", "src\DGP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBPub.API", "src\DBPub.API\DBPub.API.csproj", "{E75BA4DC-7A66-46F2-B960-19A19C93B65F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DGPub.Application.Tests", "test\DGPub.Application.Tests\DGPub.Application.Tests.csproj", "{90F3CACB-15DA-4171-BD43-D68AEA5E83DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGPub.Application.Tests", "test\DGPub.Application.Tests\DGPub.Application.Tests.csproj", "{90F3CACB-15DA-4171-BD43-D68AEA5E83DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DGPub.Infra.CrossCutting.Identity", "src\DGPub.Infra.CrossCutting.Identity\DGPub.Infra.CrossCutting.Identity.csproj", "{2454CECB-1085-45AA-9A0C-1F0A46E07DF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGPub.Infra.CrossCutting.Identity", "src\DGPub.Infra.CrossCutting.Identity\DGPub.Infra.CrossCutting.Identity.csproj", "{2454CECB-1085-45AA-9A0C-1F0A46E07DF6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{29CB93CB-6EE6-47FE-BE25-4FD2D56EAED9}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

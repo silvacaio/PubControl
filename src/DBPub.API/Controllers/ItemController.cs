@@ -1,14 +1,15 @@
 ﻿using DGPub.Domain.Core;
 using DGPub.Domain.Items;
 using DGPub.Domain.Items.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 
 namespace DBPub.API.Controllers
 {
-    [ApiController]
-    [Route("api")]
+    //[ApiController]   
+    // [Route("api")]
     public class ItemController : BaseController
     {
         private readonly IItemRepository _itemRepository;
@@ -18,7 +19,7 @@ namespace DBPub.API.Controllers
             _itemRepository = itemRepository;
         }
 
-        [HttpGet]
+        [HttpGet]        
         [Route("items")]
         public IEnumerable<Item> Get()
         {

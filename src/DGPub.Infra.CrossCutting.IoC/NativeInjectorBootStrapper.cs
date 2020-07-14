@@ -10,6 +10,8 @@ using DGPub.Infra.Data.UoW;
 using DGPub.Domain.Core;
 using DGPub.Application.Promotions.Handlers;
 using DGPub.Domain.Promotions.Handlers;
+using DGPub.Infra.CrossCutting.Identity.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace DGPub.Infra.CrossCutting.IoC
 {
@@ -18,7 +20,7 @@ namespace DGPub.Infra.CrossCutting.IoC
         public static void RegisterServices(IServiceCollection services)
         {
             // ASPNET
-            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //Repositories
             services.AddScoped<IItemRepository, ItemRepository>();
@@ -34,10 +36,8 @@ namespace DGPub.Infra.CrossCutting.IoC
 
             services.AddScoped<IPromotion, BeerWithJuicePromotion>();       
 
-            // Infra - Identity
-            //services.AddTransient<IEmailSender, AuthMessageSender>();
-            //services.AddTransient<ISmsSender, AuthMessageSender>();
-            //services.AddScoped<IUser, AspNetUser>();
+            // Infra - Identity            
+            services.AddScoped<IUser, AspNetUser>();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace DBPub.API.Configurations
 {
@@ -8,13 +9,17 @@ namespace DBPub.API.Configurations
         {
             services.AddSwaggerGen(s =>
             {
-                s.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                s.SwaggerDoc("v1", new Info
                 {
                     Version = "v1",
-                    Title = "DGPub API",
-                    Description = "Teste de Desenvolvedor .Net Core",
-                    Contact = new Microsoft.OpenApi.Models.OpenApiContact { Name = "Caio Silva", Email = "silva.caiosfc@hotmail.com" },
+                    Title = "UpServices API",
+                    Description = "API UpServices",
+                    TermsOfService = "Nenhum",
+                    Contact = new Contact { Name = "Desenvolvedor X", Email = "email@Services.io", Url = "http://Services.io" },
+                    License = new License { Name = "MIT", Url = "http://Services.io/licensa" }
                 });
+
+                s.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
             });
         }
     }
