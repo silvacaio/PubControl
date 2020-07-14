@@ -14,12 +14,12 @@ namespace DGPub.Application.Tests.Promotions.Handlers
     [TestClass]
     public class BeerWithJuicePromotionTest
     {
-        private BeerWithJuicePromotion _handler;
+        private readonly BeerWithJuicePromotion _handler;
         private readonly Mock<IItemRepository> _mockItemRepository;
         private readonly Mock<IItemTabRepository> _mockItemTabRepository;
 
-        private Item beer;
-        private Item juice;
+        private readonly Item beer;
+        private readonly Item juice;
 
         public BeerWithJuicePromotionTest()
         {
@@ -44,12 +44,12 @@ namespace DGPub.Application.Tests.Promotions.Handlers
 
             var tab = Tab.TabFactory.Create("Caio");
 
-            var beerTab = ItemTab.ItemTabFactory.Create(tab.Id, beer.Id, 2, beer.Price);
+            var beerTab = ItemTab.ItemTabFactory.Create(tab.Id, beer.Id, beer.Price);
             tab.Items.Add(beerTab);
-            tab.Items.Add(ItemTab.ItemTabFactory.Create(tab.Id, juice.Id, 2, juice.Price));
+            tab.Items.Add(ItemTab.ItemTabFactory.Create(tab.Id, juice.Id, juice.Price));
 
             //Act
-            _handler.Calcule(tab);
+            _handler.Handler(new Domain.Promotions.Commands.PromotionRunCommand(tab));
 
             //Assert            
             _mockItemTabRepository.Verify(s => s.Update(It.IsAny<ItemTab>()), Times.Once);
@@ -65,11 +65,11 @@ namespace DGPub.Application.Tests.Promotions.Handlers
 
             var tab = Tab.TabFactory.Create("Caio");
 
-            var beerTab = ItemTab.ItemTabFactory.Create(tab.Id, beer.Id, 2, beer.Price);
+            var beerTab = ItemTab.ItemTabFactory.Create(tab.Id, beer.Id, beer.Price);
             tab.Items.Add(beerTab);
 
             //Act
-            _handler.Calcule(tab);
+            _handler.Handler(new Domain.Promotions.Commands.PromotionRunCommand(tab));
 
             //Assert
             _mockItemTabRepository.Verify(s => s.Update(It.IsAny<ItemTab>()), Times.Never);
@@ -81,10 +81,10 @@ namespace DGPub.Application.Tests.Promotions.Handlers
             //Arrange 
             var tab = Tab.TabFactory.Create("Caio");
 
-            tab.Items.Add(ItemTab.ItemTabFactory.Create(tab.Id, juice.Id, 2, juice.Price));
+            tab.Items.Add(ItemTab.ItemTabFactory.Create(tab.Id, juice.Id, juice.Price));
 
             //Act
-            _handler.Calcule(tab);
+            _handler.Handler(new Domain.Promotions.Commands.PromotionRunCommand(tab));
 
             //Assert
             _mockItemTabRepository.Verify(s => s.Update(It.IsAny<ItemTab>()), Times.Never);
@@ -97,7 +97,7 @@ namespace DGPub.Application.Tests.Promotions.Handlers
             var tab = Tab.TabFactory.Create("Caio");
 
             //Act
-            _handler.Calcule(tab);
+            _handler.Handler(new Domain.Promotions.Commands.PromotionRunCommand(tab));
 
             //Assert
             _mockItemTabRepository.Verify(s => s.Update(It.IsAny<ItemTab>()), Times.Never);

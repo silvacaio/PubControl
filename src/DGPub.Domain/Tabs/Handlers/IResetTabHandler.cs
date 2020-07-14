@@ -6,5 +6,6 @@ namespace DGPub.Domain.Tabs.Handlers
 {
     public interface IResetTabHandler : IHandler<ResetTabCommand, Event<UpdatedTabEvent>>
     {
+       
     }
 }

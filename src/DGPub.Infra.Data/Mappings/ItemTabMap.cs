@@ -13,10 +13,7 @@ namespace DGPub.Infra.Data.Mappings
                  .IsRequired();
 
             builder.Property(i => i.ItemId)
-                 .IsRequired();
-
-            builder.Property(i => i.Quantity)
-                 .IsRequired();
+                 .IsRequired();       
 
             builder.Property(i => i.UnitPrice)
                  .IsRequired();

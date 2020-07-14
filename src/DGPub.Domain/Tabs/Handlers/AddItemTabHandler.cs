@@ -20,46 +20,35 @@ namespace DGPub.Domain.Tabs.Handlers
             _tabRepository = tabRepository;
         }
 
-        public virtual async Task<Event<UpdatedTabEvent>> Handler(AddItemTabCommand command)
+        public virtual Task<Event<UpdatedTabEvent>> Handler(AddItemTabCommand command)
         {
             if (!command.IsValid())
-                return null;            
+                return Task.FromResult(Event<UpdatedTabEvent>.CreateError("Informe todos os dados obrigatórios"));
 
-            Event<None> result = AddItem(command);
+            AddItem(command);
 
             if (!Commit())
-                return null;
+                return Task.FromResult(Event<UpdatedTabEvent>.CreateError("Falha ao adicionar item na comanda"));
 
             var tab = _tabRepository.FindById(command.TabId);
-            return Event<UpdatedTabEvent>.CreateSuccess(new UpdatedTabEvent(tab));
+            return Task.FromResult(Event<UpdatedTabEvent>.CreateSuccess(new UpdatedTabEvent(tab.Id, tab.CustomerName)));
         }
 
         protected Event<None> AddItem(AddItemTabCommand command)
         {
             var item = _itemRepository.FindById(command.ItemId);
             if (item == null)
-                return Event<None>.CreateError("dasdasdas");
+                return Event<None>.CreateError("Item não encontrado");
 
-            var itemTab = ItemTab.ItemTabFactory.Create(command.TabId, command.ItemId, command.Quantity, item.Price);
+            var itemTab = ItemTab.ItemTabFactory
+                .Create(command.TabId, command.ItemId, item.Price);
+
             if (!itemTab.IsValid())
-                return Event<None>.CreateError("dasdasdas");
+                return Event<None>.CreateError("Falha ao adicionar item na comanda");
 
             _itemTabRepository.Add(itemTab);
 
             return Event<None>.CreateSuccess(None.Create());
         }
-
-        protected Event<None> UpdateItem(ItemTab itemTab, AddItemTabCommand command)
-        {
-            itemTab.AddQuantity(command.Quantity);
-            if (!itemTab.IsValid())
-                return Event<None>.CreateError("dasdasdas");
-
-            _itemTabRepository.Update(itemTab);
-
-            return Event<None>.CreateSuccess(None.Create());
-        }
-
-
     }
 }

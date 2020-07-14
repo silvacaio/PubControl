@@ -7,23 +7,12 @@ using DGPub.Domain.Tabs.Event;
 using DGPub.Domain.Tabs.Events;
 using DGPub.Domain.Tabs.Handlers;
 using DGPub.Domain.Tabs.Repositories;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DGPub.Application.Tabs.Handlers
 {
-    public abstract class ITabHandler : AddItemTabHandler, ICreateTabHandler, IResetTabHandler
-    {
-        public ITabHandler(IUnitOfWork uow, IItemRepository itemRepository, IItemTabRepository itemTabRepository, ITabRepository tabRepository)
-            : base(uow, itemRepository, itemTabRepository, tabRepository)
-        {
-        }
-
-        public abstract Task<Event<CreateTabEvent>> Handler(CreateTabCommand command);
-
-        public abstract Task<Event<UpdatedTabEvent>> Handler(ResetTabCommand command);
-
-    }
-
     public class TabHandler : ITabHandler
     {
         private readonly ITabRepository _tabRepository;
@@ -42,21 +31,18 @@ namespace DGPub.Application.Tabs.Handlers
 
         public override async Task<Event<CreateTabEvent>> Handler(CreateTabCommand command)
         {
-            //TODO 
             if (!command.IsValid())
-                return null;
+                return Event<CreateTabEvent>.CreateError("Informe todos os dados obrigatórios");
 
             var tab = Tab.TabFactory.Create(command.CustomerName);
 
-            //TODO 
             if (!tab.IsValid())
-                return null;
+                return Event<CreateTabEvent>.CreateError("Dados inválidos");
 
             _tabRepository.Add(tab);
 
             if (!Commit())
-                return null;
-
+                return Event<CreateTabEvent>.CreateError("Falha ao adicionar comanda");
 
             return Event<CreateTabEvent>.CreateSuccess(new CreateTabEvent(tab.Id, tab.CustomerName));
         }
@@ -64,29 +50,59 @@ namespace DGPub.Application.Tabs.Handlers
         public override async Task<Event<UpdatedTabEvent>> Handler(AddItemTabCommand command)
         {
             var result = await base.Handler(command);
+
             if (!result.Valid)
                 return result;
 
-            var resultPromotion = await _promotionHandler.Handler(new Domain.Promotions.Commands.PromotionCommand(result.Value.Tab.Id));
+            var resultPromotion = await _promotionHandler
+                .Handler(new Domain.Promotions.Commands.PromotionCommand(result.Value.Id));
 
-            return Event<UpdatedTabEvent>.CreateSuccess(new UpdatedTabEvent(resultPromotion.Tab));
+            return Event<UpdatedTabEvent>.CreateSuccess(CreateTabUpdateEvent(command.TabId, resultPromotion.Value?.Alerts));
         }
 
-        public override async Task<Event<UpdatedTabEvent>> Handler(ResetTabCommand command)
+        public UpdatedTabEvent CreateTabUpdateEvent(Guid tabId, HashSet<string> alerts)
+        {
+            var tab = _tabRepository.FindByIdWithItems(tabId);
+            var items = new HashSet<UpdateTabItemEvent>();
+
+            foreach (var item in tab.Items)
+            {
+                items.Add(new UpdateTabItemEvent("", item.TotalItem(), item.HasDiscount()));
+            }
+
+            return new UpdatedTabEvent(tab.Id, tab.CustomerName, items, alerts);
+        }
+
+        public override Task<Event<UpdatedTabEvent>> Handler(ResetTabCommand command)
         {
             if (command.IsValid())
-                return null;
-
+                return Task.FromResult(Event<UpdatedTabEvent>.CreateError("Não foi possível resetar a comanda"));
 
             //remover todos os itens
             _tabRepository.RemoveAllItem(command.TabId);
 
             if (!Commit())
-                return null;
+                return Task.FromResult(Event<UpdatedTabEvent>.CreateError("Não foi possível resetar a comanda"));
 
             var tabUpdated = _tabRepository.FindById(command.TabId);
 
-            return Event<UpdatedTabEvent>.CreateSuccess(new UpdatedTabEvent(tabUpdated));
+            return Task.FromResult(Event<UpdatedTabEvent>.CreateSuccess(
+                new UpdatedTabEvent(tabUpdated.Id, tabUpdated.CustomerName)));
+        }
+
+        public override Task<Event<CloseTabEvent>> Handler(CloseTabCommand command)
+        {
+            if (command.IsValid())
+                return Task.FromResult(Event<CloseTabEvent>.CreateError("Não foi possível fechar a comanda"));
+
+            var tab = _tabRepository.FindByIdWithItems(command.TabId);
+            tab.Close();
+            _tabRepository.Update(tab);
+
+            if (!Commit())
+                return Task.FromResult(Event<CloseTabEvent>.CreateError("Falha ao fechar a comanda"));
+
+            return Task.FromResult(Event<CloseTabEvent>.CreateSuccess(new CloseTabEvent(tab.Id)));
         }
     }
 }

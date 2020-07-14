@@ -34,7 +34,7 @@ namespace DGPub.Infra.CrossCutting.IoC
             services.AddScoped<ITabHandler, TabHandler>();
             services.AddScoped<IPromotionHandler, PromotionHandler>();
 
-            services.AddScoped<IPromotion, BeerWithJuicePromotion>();       
+            services.AddScoped<IRunPromotionHandler, BeerWithJuicePromotion>();       
 
             // Infra - Identity            
             services.AddScoped<IUser, AspNetUser>();

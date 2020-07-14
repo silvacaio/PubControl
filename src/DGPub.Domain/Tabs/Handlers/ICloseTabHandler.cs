@@ -4,8 +4,8 @@ using DGPub.Domain.Tabs.Event;
 
 namespace DGPub.Domain.Tabs.Handlers
 {
-    public interface ICreateTabHandler : IHandler<CreateTabCommand, Event<CreateTabEvent>>
+    public interface ICloseTabHandler : IHandler<CloseTabCommand, Event<CloseTabEvent>>
     {
-        
+
     }
 }

@@ -1,15 +1,20 @@
 ﻿using DGPub.Domain.Core;
 using DGPub.Domain.Tabs;
+using System.Collections.Generic;
 
 namespace DGPub.Domain.Promotions.Events
 {
-    public class PromotionEvent : Event<PromotionEvent>
+    public class PromotionEvent : EventBase// Event<PromotionEvent>
     {
-        public PromotionEvent(Tab tab)
+        public PromotionEvent()
         {
-            Tab = tab;
         }
 
-        public Tab Tab { get; private set; }        
+        public PromotionEvent(HashSet<string> alerts)
+        {
+            Alerts = alerts;
+        }
+
+        public HashSet<string> Alerts { get; private set; }
     }
 }

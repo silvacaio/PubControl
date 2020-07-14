@@ -4,7 +4,8 @@ using DGPub.Domain.Tabs.Events;
 
 namespace DGPub.Domain.Tabs.Handlers
 {
-   public interface IAddItemTabHandler : IHandler<AddItemTabCommand, Event<UpdatedTabEvent>>
+    public interface IAddItemTabHandler : IHandler<AddItemTabCommand, Event<UpdatedTabEvent>>
     {
+
     }
 }

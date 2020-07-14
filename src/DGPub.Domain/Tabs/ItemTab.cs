@@ -8,7 +8,7 @@ namespace DGPub.Domain.Tabs
     {
         protected ItemTab() { }
         public decimal UnitPrice { get; private set; }
-        public int Quantity { get; private set; }        
+        public decimal Discount { get; private set; }
         public Guid ItemId { get; private set; }
         public virtual Item Item { get; private set; }
         public Guid TabId { get; private set; }
@@ -16,36 +16,41 @@ namespace DGPub.Domain.Tabs
 
         public override bool IsValid()
         {
-            return ItemId != null && Quantity > 0;
+            return ItemId != null;
         }
 
-        public void AddQuantity(int quantity)
+        public decimal TotalItem()
         {
-            Quantity += quantity;
+            return Math.Max(UnitPrice - Discount, 0);
+        }
+
+        public bool HasDiscount()
+        {
+            return Discount > 0;
         }
 
         public static class ItemTabFactory
         {
-            public static ItemTab Create(Guid tabId, Guid itemId, int quantity, decimal unitPrice)
+            public static ItemTab Create(Guid tabId, Guid itemId, decimal unitPrice)
             {
                 return new ItemTab
                 {
                     Id = Guid.NewGuid(),
                     TabId = tabId,
                     ItemId = itemId,
-                    Quantity = quantity,
                     UnitPrice = unitPrice
                 };
             }
 
-            public static ItemTab Load(Guid id, Guid itemId, Guid tabId, decimal unitPrice)
+            public static ItemTab LoadWithDiscount(Guid id, Guid itemId, Guid tabId, decimal unitPrice, decimal discount)
             {
                 return new ItemTab
                 {
                     Id = id,
                     TabId = tabId,
-                    ItemId = itemId,                    
-                    UnitPrice = unitPrice
+                    ItemId = itemId,
+                    UnitPrice = unitPrice,
+                    Discount = discount
                 };
             }
         }

@@ -9,32 +9,36 @@ using System.Threading.Tasks;
 
 namespace DGPub.Application.Promotions.Handlers
 {
-    public class PromotionHandler : CommandHandler,
-        IPromotionHandler
+    public class PromotionHandler : IPromotionHandler
     {
-        private readonly IEnumerable<IPromotion> _promotions;
+        private readonly IEnumerable<IRunPromotionHandler> _promotions;
         private readonly ITabRepository _tabRepository;
-        public PromotionHandler(IUnitOfWork uow, ITabRepository tabRepository, IEnumerable<IPromotion> promotions) : base(uow)
+
+        public PromotionHandler(IEnumerable<IRunPromotionHandler> promotions, ITabRepository tabRepository)
         {
             _promotions = promotions;
             _tabRepository = tabRepository;
         }
 
-        public Task<PromotionEvent> Handler(PromotionCommand command)
+        public async Task<Event<PromotionEvent>> Handler(PromotionCommand command)
         {
             if (!command.IsValid())
-                return null;
+                return Event<PromotionEvent>.CreateSuccess(new PromotionEvent());
 
             var tab = _tabRepository.FindByIdWithItems(command.TabId);
             if (_promotions == null)
-                return Task.FromResult(new PromotionEvent(tab));
+                return Event<PromotionEvent>.CreateSuccess(new PromotionEvent());
+
+            HashSet<string> promotionsAlert = new HashSet<string>();
 
             foreach (var promo in _promotions)
             {
-                promo.Calcule(tab);
+                var result = await promo.Handler(new PromotionRunCommand(tab));
+                if (!string.IsNullOrWhiteSpace(result.Value.Alert))
+                    promotionsAlert.Add(result.Value.Alert);
             }
 
-            return Task.FromResult(new PromotionEvent(tab));
+            return Event<PromotionEvent>.CreateSuccess(new PromotionEvent(promotionsAlert));
         }
     }
 }
