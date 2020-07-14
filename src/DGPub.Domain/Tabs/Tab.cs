@@ -18,7 +18,12 @@ namespace DGPub.Domain.Tabs
 
         public decimal Total()
         {
-            return (Items?.Sum(i => i.UnitPrice)).GetValueOrDefault();
+            return (Items?.Sum(i => i.TotalItem())).GetValueOrDefault();
+        }
+
+        public decimal TotalDiscount()
+        {
+            return (Items?.Sum(i => i.Discount)).GetValueOrDefault();
         }
 
         public void Close()

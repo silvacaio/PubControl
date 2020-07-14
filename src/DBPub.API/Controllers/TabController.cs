@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using DBPub.API.ViewModels;
-using DGPub.Application.Tabs.Handlers;
 using DGPub.Domain.Core;
 using DGPub.Domain.Tabs;
 using DGPub.Domain.Tabs.Commands;
+using DGPub.Domain.Tabs.Handlers;
 using DGPub.Domain.Tabs.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -74,12 +74,11 @@ namespace DBPub.API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            //var result = await _tabHandler.Handler(new AddItemTabCommand(model.TabId, model.ItemId, model.Quantity));
-            //if (result.Valid)
-            //    return SuccessResponse(result);
+            var result = await _tabHandler.Handler(new CloseTabCommand(tabId));
+            if (result.Valid)
+                return SuccessResponse(result);
 
-            // return ErrorResponse(new string[1] { result.Error });
-            return BadRequest();
+            return ErrorResponse(new string[1] { result.Error });
         }
 
         [HttpPut]

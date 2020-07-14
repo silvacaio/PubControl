@@ -23,6 +23,6 @@ namespace DGPub.Domain.Tabs.Handlers
 
         public abstract Task<Event<UpdatedTabEvent>> Handler(ResetTabCommand command);
 
-        public abstract Task<Event<CloseTabEvent>> Handler(CloseTabCommand command);
+        public abstract Task<Event<InvoiceTabEvent>> Handler(CloseTabCommand command);
     }
 }

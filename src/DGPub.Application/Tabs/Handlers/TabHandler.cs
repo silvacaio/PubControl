@@ -1,4 +1,5 @@
 ﻿using DGPub.Domain.Core;
+using DGPub.Domain.Helpers.Items;
 using DGPub.Domain.Items.Repositories;
 using DGPub.Domain.Promotions.Handlers;
 using DGPub.Domain.Tabs;
@@ -17,16 +18,19 @@ namespace DGPub.Application.Tabs.Handlers
     {
         private readonly ITabRepository _tabRepository;
         private readonly IPromotionHandler _promotionHandler;
+        private readonly IItemCache _itemCache;
 
         public TabHandler(
             ITabRepository tabRepository,
             IUnitOfWork uow,
             IItemRepository itemRepository,
             IItemTabRepository itemTabRepository,
-            IPromotionHandler promotionHandler) : base(uow, itemRepository, itemTabRepository, tabRepository)
+            IPromotionHandler promotionHandler,
+            IItemCache itemCache) : base(uow, itemRepository, itemTabRepository, tabRepository)
         {
             _tabRepository = tabRepository;
             _promotionHandler = promotionHandler;
+            _itemCache = itemCache;
         }
 
         public override async Task<Event<CreateTabEvent>> Handler(CreateTabCommand command)
@@ -67,7 +71,7 @@ namespace DGPub.Application.Tabs.Handlers
 
             foreach (var item in tab.Items)
             {
-                items.Add(new UpdateTabItemEvent("", item.TotalItem(), item.HasDiscount()));
+                items.Add(new UpdateTabItemEvent(_itemCache.GetName(item.Id), item.TotalItem(), item.HasDiscount()));
             }
 
             return new UpdatedTabEvent(tab.Id, tab.CustomerName, items, alerts);
@@ -90,19 +94,30 @@ namespace DGPub.Application.Tabs.Handlers
                 new UpdatedTabEvent(tabUpdated.Id, tabUpdated.CustomerName)));
         }
 
-        public override Task<Event<CloseTabEvent>> Handler(CloseTabCommand command)
+        public override Task<Event<InvoiceTabEvent>> Handler(CloseTabCommand command)
         {
             if (command.IsValid())
-                return Task.FromResult(Event<CloseTabEvent>.CreateError("Não foi possível fechar a comanda"));
+                return Task.FromResult(Event<InvoiceTabEvent>.CreateError("Não foi possível fechar a comanda"));
 
             var tab = _tabRepository.FindByIdWithItems(command.TabId);
             tab.Close();
             _tabRepository.Update(tab);
 
             if (!Commit())
-                return Task.FromResult(Event<CloseTabEvent>.CreateError("Falha ao fechar a comanda"));
+                return Task.FromResult(Event<InvoiceTabEvent>.CreateError("Falha ao fechar a comanda"));
 
-            return Task.FromResult(Event<CloseTabEvent>.CreateSuccess(new CloseTabEvent(tab.Id)));
+            return Task.FromResult(Event<InvoiceTabEvent>.CreateSuccess(CreateInvoice(tab)));
+        }
+
+        public InvoiceTabEvent CreateInvoice(Tab tab)
+        {
+            var items = new HashSet<ItemInvoiceEvent>();
+            foreach (var item in tab?.Items)
+            {
+                items.Add(new ItemInvoiceEvent(_itemCache.GetName(item.Id), item.UnitPrice, item.Discount));
+            }
+
+            return new InvoiceTabEvent(tab.Id, tab.CustomerName, tab.Total(), tab.TotalDiscount(), items);
         }
     }
 }
