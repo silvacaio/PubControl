@@ -32,7 +32,7 @@ namespace DGPub.Infra.CrossCutting.IoC
             services.AddScoped<ITabHandler, TabHandler>();
             services.AddScoped<IPromotionHandler, PromotionHandler>();
 
-           
+            services.AddScoped<IPromotion, BeerWithJuicePromotion>();       
 
             // Infra - Identity
             //services.AddTransient<IEmailSender, AuthMessageSender>();

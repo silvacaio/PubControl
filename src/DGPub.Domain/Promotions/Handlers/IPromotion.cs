@@ -2,8 +2,17 @@
 
 namespace DGPub.Domain.Promotions.Handlers
 {
-    public interface IPromotion
+    public abstract class IPromotion
     {
-        void Calcule(Tab tab);
+        public void Calcule(Tab tab)
+        {
+            if (!IsValid(tab))
+                return;
+
+            CalculeInternal(tab);
+        }
+
+        protected abstract bool IsValid(Tab tab);
+        protected abstract void CalculeInternal(Tab tab);
     }
 }

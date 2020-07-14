@@ -23,18 +23,15 @@ namespace DGPub.Domain.Tabs.Handlers
         public virtual async Task<Event<UpdatedTabEvent>> Handler(AddItemTabCommand command)
         {
             if (!command.IsValid())
-                return null;
+                return null;            
 
-            var itemTab = _itemTabRepository.FindByIdAndTab(command.ItemId, command.TabId);
-
-            Event<None> result = itemTab != null
-                ? UpdateItem(itemTab, command) : AddItem(command);
+            Event<None> result = AddItem(command);
 
             if (!Commit())
                 return null;
 
             var tab = _tabRepository.FindById(command.TabId);
-            return Event<UpdatedTabEvent>.CreateSuccess(new UpdatedTabEvent(tab)); 
+            return Event<UpdatedTabEvent>.CreateSuccess(new UpdatedTabEvent(tab));
         }
 
         protected Event<None> AddItem(AddItemTabCommand command)

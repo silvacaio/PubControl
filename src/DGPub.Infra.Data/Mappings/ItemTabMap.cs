@@ -1,4 +1,5 @@
-﻿using DGPub.Domain.Tabs;
+﻿using DGPub.Domain.Items;
+using DGPub.Domain.Tabs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DGPub.Infra.Data.Migrations
 {
-    public partial class StartDatabase : Migration
+    public partial class StartSqlDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -25,7 +25,8 @@ namespace DGPub.Infra.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    CustomerName = table.Column<string>(nullable: false)
+                    CustomerName = table.Column<string>(nullable: false),
+                    Open = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -62,22 +63,13 @@ namespace DGPub.Infra.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Item",
                 columns: new[] { "Id", "Name", "Price" },
-                values: new object[] { new Guid("208be985-f429-48e5-8ea9-ec3966c87430"), "Cerveja", 5m });
-
-            migrationBuilder.InsertData(
-                table: "Item",
-                columns: new[] { "Id", "Name", "Price" },
-                values: new object[] { new Guid("5ae2d0db-1ef3-40dc-ab9a-8b9ff9130565"), "Conhaque", 20m });
-
-            migrationBuilder.InsertData(
-                table: "Item",
-                columns: new[] { "Id", "Name", "Price" },
-                values: new object[] { new Guid("8dbf9f09-f772-449f-83c6-a869517e9c79"), "Suco", 50m });
-
-            migrationBuilder.InsertData(
-                table: "Item",
-                columns: new[] { "Id", "Name", "Price" },
-                values: new object[] { new Guid("7709e4e6-1c49-4e62-a266-383c5f1a74ff"), "Água", 70m });
+                values: new object[,]
+                {
+                    { new Guid("61e2d6a1-f060-4293-978b-28ffc05842e1"), "Cerveja", 5m },
+                    { new Guid("02e617c3-6675-447c-96d1-a41bfefd426d"), "Conhaque", 20m },
+                    { new Guid("38184383-6e55-4464-9010-4242e3777a2c"), "Suco", 50m },
+                    { new Guid("5db8dfb6-baaa-460f-8c02-5249a47abd1f"), "Água", 70m }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ItemTab_ItemId",

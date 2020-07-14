@@ -3,6 +3,7 @@ using System;
 using DGPub.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DGPub.Infra.Data.Migrations
@@ -14,20 +15,22 @@ namespace DGPub.Infra.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.5");
+                .HasAnnotation("ProductVersion", "3.1.5")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("DGPub.Domain.Items.Item", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -36,25 +39,25 @@ namespace DGPub.Infra.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("208be985-f429-48e5-8ea9-ec3966c87430"),
+                            Id = new Guid("61e2d6a1-f060-4293-978b-28ffc05842e1"),
                             Name = "Cerveja",
                             Price = 5m
                         },
                         new
                         {
-                            Id = new Guid("5ae2d0db-1ef3-40dc-ab9a-8b9ff9130565"),
+                            Id = new Guid("02e617c3-6675-447c-96d1-a41bfefd426d"),
                             Name = "Conhaque",
                             Price = 20m
                         },
                         new
                         {
-                            Id = new Guid("8dbf9f09-f772-449f-83c6-a869517e9c79"),
+                            Id = new Guid("38184383-6e55-4464-9010-4242e3777a2c"),
                             Name = "Suco",
                             Price = 50m
                         },
                         new
                         {
-                            Id = new Guid("7709e4e6-1c49-4e62-a266-383c5f1a74ff"),
+                            Id = new Guid("5db8dfb6-baaa-460f-8c02-5249a47abd1f"),
                             Name = "Água",
                             Price = 70m
                         });
@@ -64,19 +67,19 @@ namespace DGPub.Infra.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ItemId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("int");
 
                     b.Property<Guid>("TabId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("UnitPrice")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -91,11 +94,14 @@ namespace DGPub.Infra.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CustomerName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Open")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

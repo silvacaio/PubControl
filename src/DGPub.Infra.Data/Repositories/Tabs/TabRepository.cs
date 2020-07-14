@@ -17,16 +17,35 @@ namespace DGPub.Infra.Data.Repositories.Tabs
 
         public IItemTabRepository ItemTabRepository { get; set; }
 
-        public override Tab FindById(Guid id)
+        public Tab FindByIdWithItems(Guid id)
         {
             return Db.Tab.AsNoTracking().Include(a => a.Items)
                 .FirstOrDefault(a => a.Id == id);
         }
 
+        public Tab FindById(Guid id, bool withItems)
+        {
+            return Db.Tab.AsNoTracking()
+                .Include(a => a.Items)
+                .FirstOrDefault(i => i.Id == id);
+        }
+
         public override IEnumerable<Tab> GetAll()
         {
-            return Db.Tab.Include(a => a.Items).ToList();
+            return Db.Tab.AsNoTracking().Include(a => a.Items).ToList();
         }
-       
+
+        public IEnumerable<Tab> GetAllOpen(bool withItems)
+        {
+            if (withItems)
+                return Db.Tab.AsNoTracking().Include(a => a.Items).ToList();
+
+            return Db.Tab.AsNoTracking().Where(t => t.Open).ToList();
+        }
+
+        public void RemoveAllItem(Guid tabId)
+        {
+            ItemTabRepository.DeleteByTabId(tabId);
+        }
     }
 }

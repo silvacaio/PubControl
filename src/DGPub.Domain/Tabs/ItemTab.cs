@@ -8,7 +8,7 @@ namespace DGPub.Domain.Tabs
     {
         protected ItemTab() { }
         public decimal UnitPrice { get; private set; }
-        public int Quantity { get; private set; }
+        public int Quantity { get; private set; }        
         public Guid ItemId { get; private set; }
         public virtual Item Item { get; private set; }
         public Guid TabId { get; private set; }
@@ -34,6 +34,17 @@ namespace DGPub.Domain.Tabs
                     TabId = tabId,
                     ItemId = itemId,
                     Quantity = quantity,
+                    UnitPrice = unitPrice
+                };
+            }
+
+            public static ItemTab Load(Guid id, Guid itemId, Guid tabId, decimal unitPrice)
+            {
+                return new ItemTab
+                {
+                    Id = id,
+                    TabId = tabId,
+                    ItemId = itemId,                    
                     UnitPrice = unitPrice
                 };
             }

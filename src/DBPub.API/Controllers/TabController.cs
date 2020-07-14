@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace DBPub.API.Controllers
 {
     [ApiController]
-    //[Route("api/[controller]")]
     public class TabController : BaseController
     {
         private readonly ITabHandler _tabHandler;
@@ -25,10 +24,10 @@ namespace DBPub.API.Controllers
         }
 
         [HttpGet]
-        [Route("tab")]
+        [Route("tab/open")]
         public IEnumerable<Tab> Get()
         {
-            return _tabRepository.GetAll();
+            return _tabRepository.GetAllOpen(true);
         }
 
         [HttpPost]
@@ -49,13 +48,21 @@ namespace DBPub.API.Controllers
         [Route("tab/addItem")]
         public async Task<IActionResult> AddItem(AddItemViewModel model)
         {
-            if (!ModelState.IsValid) return BadRequest();
+            try
+            {
 
-            var result = await _tabHandler.Handler(new AddItemTabCommand(model.TabId, model.ItemId, model.Quantity));
-            if (result.Valid)
-                return SuccessResponse(result);
+                if (!ModelState.IsValid) return BadRequest();
 
-            return ErrorResponse(new string[1] { result.Error });
+                var result = await _tabHandler.Handler(new AddItemTabCommand(model.TabId, model.ItemId, model.Quantity));
+                if (result.Valid)
+                    return SuccessResponse(result);
+
+                return ErrorResponse(new string[1] { result.Error });
+            }
+            catch (Exception e)
+            {
+                return ErrorResponse(new string[1] { e.Message });
+            }
         }
 
         [HttpPost]
@@ -72,18 +79,17 @@ namespace DBPub.API.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
-        [Route("tab/clean")]
-        public async Task<IActionResult> Clean([Required]Guid tabId)
+        [HttpPut]
+        [Route("tab/reset")]
+        public async Task<IActionResult> Reset([Required]Guid tabId)
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            //var result = await _tabHandler.Handler(new AddItemTabCommand(model.TabId, model.ItemId, model.Quantity));
-            //if (result.Valid)
-            //    return SuccessResponse(result);
+            var result = await _tabHandler.Handler(new ResetTabCommand(tabId));
+            if (result.Valid)
+                return SuccessResponse(result);
 
-            // return ErrorResponse(new string[1] { result.Error });
-            return BadRequest();
+            return ErrorResponse(new string[1] { result.Error });
         }
 
     }

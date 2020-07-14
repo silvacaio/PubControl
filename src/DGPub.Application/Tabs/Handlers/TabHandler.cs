@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DGPub.Application.Tabs.Handlers
 {
-    public abstract class ITabHandler : AddItemTabHandler, ICreateTabHandler
+    public abstract class ITabHandler : AddItemTabHandler, ICreateTabHandler, IResetTabHandler
     {
         public ITabHandler(IUnitOfWork uow, IItemRepository itemRepository, IItemTabRepository itemTabRepository, ITabRepository tabRepository)
             : base(uow, itemRepository, itemTabRepository, tabRepository)
@@ -19,6 +19,9 @@ namespace DGPub.Application.Tabs.Handlers
         }
 
         public abstract Task<Event<CreateTabEvent>> Handler(CreateTabCommand command);
+
+        public abstract Task<Event<UpdatedTabEvent>> Handler(ResetTabCommand command);
+
     }
 
     public class TabHandler : ITabHandler
@@ -67,6 +70,23 @@ namespace DGPub.Application.Tabs.Handlers
             var resultPromotion = await _promotionHandler.Handler(new Domain.Promotions.Commands.PromotionCommand(result.Value.Tab.Id));
 
             return Event<UpdatedTabEvent>.CreateSuccess(new UpdatedTabEvent(resultPromotion.Tab));
-        }        
+        }
+
+        public override async Task<Event<UpdatedTabEvent>> Handler(ResetTabCommand command)
+        {
+            if (command.IsValid())
+                return null;
+
+
+            //remover todos os itens
+            _tabRepository.RemoveAllItem(command.TabId);
+
+            if (!Commit())
+                return null;
+
+            var tabUpdated = _tabRepository.FindById(command.TabId);
+
+            return Event<UpdatedTabEvent>.CreateSuccess(new UpdatedTabEvent(tabUpdated));
+        }
     }
 }

@@ -6,5 +6,6 @@ namespace DGPub.Domain.Tabs.Repositories
     public interface IItemTabRepository : IRepository<ItemTab>
     {
         ItemTab FindByIdAndTab(Guid itemId, Guid tabId);
+        void DeleteByTabId(Guid tabId);
     }
 }
