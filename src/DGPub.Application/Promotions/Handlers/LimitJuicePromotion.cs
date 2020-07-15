@@ -16,7 +16,7 @@ namespace DGPub.Application.Promotions.Handlers
     public class LimitJuicePromotion : IRunPromotionHandler
     {
         private readonly IItemRepository _itemRepository;
-        private readonly IItemTabRepository _itemTabRepository;        
+        private readonly IItemTabRepository _itemTabRepository;
 
         public readonly string _description = "Só é permitido 3 sucos por comanda";
 
@@ -25,7 +25,7 @@ namespace DGPub.Application.Promotions.Handlers
             _itemRepository = itemRepository;
             _itemTabRepository = itemTabRepository;
         }
-       
+
         public Task<Event<ResultPromotionEvent>> Handler(PromotionRunCommand command)
         {
             if (!command.IsValid())
@@ -40,7 +40,9 @@ namespace DGPub.Application.Promotions.Handlers
 
             for (int i = countJuices; i > 3; i--)
             {
-                _itemTabRepository.Delete(juices[i].Id);
+                var juice = juices[i - 1];
+                command.Tab.Items.Remove(juice);
+                _itemTabRepository.Delete(juices[i - 1].Id);
             }
 
             return Task.FromResult(Event<ResultPromotionEvent>.CreateSuccess(new ResultPromotionEvent(true, _description)));

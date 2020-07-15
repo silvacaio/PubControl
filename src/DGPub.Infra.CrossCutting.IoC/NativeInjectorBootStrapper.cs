@@ -35,8 +35,8 @@ namespace DGPub.Infra.CrossCutting.IoC
             services.AddScoped<ITabHandler, TabHandler>();
             services.AddScoped<IPromotionHandler, PromotionHandler>();
 
-            services.AddScoped<IRunPromotionHandler, BeerWithJuicePromotion>();
             services.AddScoped<IRunPromotionHandler, LimitJuicePromotion>();
+            services.AddScoped<IRunPromotionHandler, BeerWithJuicePromotion>();            
             services.AddScoped<IRunPromotionHandler, FreeWaterWhenBrandyAndBeerPromotion>();
 
             //cahce

@@ -46,6 +46,18 @@ namespace DGPub.Application.Promotions.Handlers.Tests
         }
 
         [TestMethod()]
+        public async Task Promotion_CommandInvalid_DontRun()
+        {
+            //Arrange                     
+
+            //Act
+            var result = await _handler.Handler(new Domain.Promotions.Commands.PromotionRunCommand(null));
+
+            //Assert
+            Assert.IsFalse(result.Value.Applied);
+        }
+
+        [TestMethod()]
         public async Task Promotion_HasFreeWater_DontAddWater()
         {
             //Arrange

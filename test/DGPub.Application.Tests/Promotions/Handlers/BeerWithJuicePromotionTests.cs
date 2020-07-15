@@ -5,6 +5,7 @@ using DGPub.Domain.Tabs;
 using DGPub.Domain.Tabs.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Threading.Tasks;
 
 namespace DGPub.Application.Tests.Promotions.Handlers
 {
@@ -88,7 +89,7 @@ namespace DGPub.Application.Tests.Promotions.Handlers
         }
 
         [TestMethod]
-        public void Promotion_Empty()
+        public void Promotion_TabEmpty()
         {
             //Arrange 
             var tab = Tab.TabFactory.Create("ClearSale");
@@ -98,6 +99,18 @@ namespace DGPub.Application.Tests.Promotions.Handlers
 
             //Assert
             _mockItemTabRepository.Verify(s => s.Update(It.IsAny<ItemTab>()), Times.Never);
+        }
+
+        [TestMethod()]
+        public async Task Promotion_CommandInvalid_DontRun()
+        {
+            //Arrange                     
+
+            //Act
+            var result = await _handler.Handler(new Domain.Promotions.Commands.PromotionRunCommand(null));
+
+            //Assert
+            Assert.IsFalse(result.Value.Applied);
         }
     }
 }
