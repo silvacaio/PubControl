@@ -37,7 +37,7 @@ namespace DGPub.Domain.Tabs
         public override bool IsValid()
         {
             return !string.IsNullOrWhiteSpace(CustomerName);
-        }
+        }        
 
         public static class TabFactory
         {

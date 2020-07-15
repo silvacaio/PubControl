@@ -37,13 +37,13 @@ namespace DGPub.Application.Promotions.Handlers
             if (command.Tab.Items.Any(a => a.ItemId == water.Id && a.TotalItem() == 0))
                 return Task.FromResult(Event<ResultPromotionEvent>.CreateSuccess(new ResultPromotionEvent(false, _description)));
 
-            var hasThreeBrandy = command.Tab.Items.Where(i => i.ItemId == brandyItem.Id).Count() == 3;
-            var hasTwoBrandy = command.Tab.Items.Where(i => i.ItemId == beerItem.Id).Count() == 2;
+            var hasThreeBrandy = command.Tab.Items.Where(i => i.ItemId == brandyItem.Id).Count() >= 3;
+            var hasTwoBeer = command.Tab.Items.Where(i => i.ItemId == beerItem.Id).Count() >= 2;
 
-            if (hasThreeBrandy && hasTwoBrandy)
+            if (hasThreeBrandy && hasTwoBeer)
             {
                 var waterTab = command.Tab.Items.FirstOrDefault(i => i.ItemId == water.Id);
-                if (water != null)
+                if (waterTab != null)
                     return CreateFreeWater(waterTab);
 
                 return Task.FromResult(Event<ResultPromotionEvent>.CreateSuccess(new ResultPromotionEvent(false, _description)));

@@ -5,14 +5,11 @@ using DGPub.Domain.Tabs;
 using DGPub.Domain.Tabs.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DGPub.Application.Tests.Promotions.Handlers
 {
     [TestClass]
-    public class BeerWithJuicePromotionTest
+    public class BeerWithJuicePromotionTests
     {
         private readonly BeerWithJuicePromotion _handler;
         private readonly Mock<IItemRepository> _mockItemRepository;
@@ -21,7 +18,7 @@ namespace DGPub.Application.Tests.Promotions.Handlers
         private readonly Item beer;
         private readonly Item juice;
 
-        public BeerWithJuicePromotionTest()
+        public BeerWithJuicePromotionTests()
         {
             _mockItemRepository = new Mock<IItemRepository>();
             _mockItemTabRepository = new Mock<IItemTabRepository>();
@@ -42,7 +39,7 @@ namespace DGPub.Application.Tests.Promotions.Handlers
         {
             //Arrange      
 
-            var tab = Tab.TabFactory.Create("Caio");
+            var tab = Tab.TabFactory.Create("ClearSale");
 
             var beerTab = ItemTab.ItemTabFactory.Create(tab.Id, beer.Id, beer.Price);
             tab.Items.Add(beerTab);
@@ -63,7 +60,7 @@ namespace DGPub.Application.Tests.Promotions.Handlers
             _mockItemRepository.Setup(i => i.GetByName("cerveja"))
                 .Returns(beer);
 
-            var tab = Tab.TabFactory.Create("Caio");
+            var tab = Tab.TabFactory.Create("ClearSale");
 
             var beerTab = ItemTab.ItemTabFactory.Create(tab.Id, beer.Id, beer.Price);
             tab.Items.Add(beerTab);
@@ -79,7 +76,7 @@ namespace DGPub.Application.Tests.Promotions.Handlers
         public void Promotion_OnlyJuice_NotChangePrice()
         {
             //Arrange 
-            var tab = Tab.TabFactory.Create("Caio");
+            var tab = Tab.TabFactory.Create("ClearSale");
 
             tab.Items.Add(ItemTab.ItemTabFactory.Create(tab.Id, juice.Id, juice.Price));
 
@@ -94,7 +91,7 @@ namespace DGPub.Application.Tests.Promotions.Handlers
         public void Promotion_Empty()
         {
             //Arrange 
-            var tab = Tab.TabFactory.Create("Caio");
+            var tab = Tab.TabFactory.Create("ClearSale");
 
             //Act
             _handler.Handler(new Domain.Promotions.Commands.PromotionRunCommand(tab));
