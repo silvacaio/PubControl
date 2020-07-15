@@ -10,7 +10,7 @@ namespace DGPub.Infra.CrossCutting.Identity.Models.ViewModels
 
         [Required]
         [DataType(DataType.Password)]
-        public string Senha { get; set; }
+        public string Password { get; set; }
 
         //[Display(Name = "Remember me?")]
         //public bool RememberMe { get; set; }

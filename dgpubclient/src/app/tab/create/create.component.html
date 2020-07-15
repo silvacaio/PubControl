@@ -1,0 +1,15 @@
+<div class="content">
+    <form class="formData formCreate" (ngSubmit)="create()" [formGroup]="createForm">
+
+        <div class="alert" *ngIf="msgs.length > 0">         
+            <ul>
+              <li *ngFor="let msg of msgs">{{ msg }}</li>
+            </ul>
+          </div>
+
+        <h1>Criar comanda</h1>
+        <input id="customerName" type="customerName" placeholder="Nome do cliente" formControlName="customerName">        
+        <br>
+        <button>Criar</button>        
+    </form>
+</div>

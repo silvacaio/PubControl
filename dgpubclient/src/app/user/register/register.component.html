@@ -1,0 +1,30 @@
+<div class="login content">
+    <form class="formData" (ngSubmit)="register()" [formGroup]="registerForm">
+        <div class="links">
+            <a routerLink="/login" routerLinkActive="selected">Login</a><br>
+            <a routerLink="/register" routerLinkActive="selected">Register</a><br>
+        </div>
+        <div class="alert" *ngIf="msgs.length > 0">
+            <ul>
+                <li *ngFor="let msg of msgs">{{ msg }}</li>
+            </ul>
+        </div>
+
+        <h1>DGPub</h1>
+        <div class="form-group">
+            <input id="name" type="text" placeholder="Nome" formControlName="name">
+        </div>
+        <div class="form-group">
+            <input id="email" type="email" placeholder="E-mail" formControlName="email">
+        </div>
+        <div class="form-group">
+            <input id="password" type="password" placeholder="Senha" formControlName="password">
+        </div>
+        <div class="form-group">
+            <input id="confirmPassword" type="password" placeholder="Confirmação de senha"
+                formControlName="confirmPassword">
+        </div>
+        <br>
+        <button>Cadastrar</button>
+    </form>
+</div>

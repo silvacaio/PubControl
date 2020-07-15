@@ -48,13 +48,13 @@ namespace DBPub.API.Controllers
                     return ErrorResponse("Dados inválidos");
                 }
 
-                var user = new ApplicationUser { UserName = model.Nome, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Name, Email = model.Email };
 
-                var result = await _userManager.CreateAsync(user, model.Senha);
+                var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    var response = await GerarTokenUsuario(new LoginViewModel { Email = model.Email, Senha = model.Senha });
+                    var response = await GerarTokenUsuario(new LoginViewModel { Email = model.Email, Password = model.Password });
                     return SuccessResponse(response);
                 }
 
@@ -76,7 +76,7 @@ namespace DBPub.API.Controllers
                 return ErrorResponse("Dados inválidos");
             }
 
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Senha, false, true);
+            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, true);
 
             if (result.Succeeded)
             {

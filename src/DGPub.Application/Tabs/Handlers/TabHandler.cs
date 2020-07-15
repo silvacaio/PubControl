@@ -117,7 +117,7 @@ namespace DGPub.Application.Tabs.Handlers
                 items.Add(new ItemInvoiceEvent(_itemCache.GetName(item.Id), item.UnitPrice, item.Discount));
             }
 
-            return new InvoiceTabEvent(tab.Id, tab.CustomerName, tab.Total(), tab.TotalDiscount(), items);
+            return new InvoiceTabEvent(tab.Id, tab.CustomerName, tab.Total, tab.TotalDiscount(), items);
         }
     }
 }

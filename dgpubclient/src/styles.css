@@ -1,0 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+input{    
+    margin-bottom: 10px;
+}
+
+html{
+    background-image: url("./imgs/background.jpg");
+}
+
+.content{
+    margin: auto auto;
+    width: 650px;
+    height: 500px;
+    border: 1px #6959CD solid;;
+    border-radius: 3%;
+    background-color: white;
+}
+
+.formData{
+    margin: auto auto;
+    height: 100%;
+    width: 100%;
+    text-align: center;  
+}
+
+input:not([type='button']){
+    width: 250px;
+}
+
+input[type="button"]{
+    margin: 5px;
+    border-radius: 15px;
+}
+
+.selected {
+    font-weight: bold;
+}
+
+.form-group{
+    margin: 5px;
+}

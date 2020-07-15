@@ -16,9 +16,12 @@ namespace DGPub.Domain.Tabs
 
         public virtual ICollection<ItemTab> Items { get; set; }
 
-        public decimal Total()
+        public decimal Total
         {
-            return (Items?.Sum(i => i.TotalItem())).GetValueOrDefault();
+            get
+            {
+                return (Items?.Sum(i => i.TotalItem())).GetValueOrDefault();
+            }
         }
 
         public decimal TotalDiscount()

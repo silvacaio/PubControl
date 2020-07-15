@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DBPub.API.Controllers
 {
     [ApiController]
-    [Authorize]
+    [AllowAnonymous]
     public class TabController : BaseController
     {
         private readonly ITabHandler _tabHandler;
@@ -33,32 +33,37 @@ namespace DBPub.API.Controllers
             return _tabRepository.GetAllOpen(true);
         }
 
+        [HttpGet]
+        [Route("tab/{id:guid}")]          
+        public Tab Get([Required] Guid id)
+        {
+            return _tabRepository.FindByIdWithItems(id);
+        }
+
         [HttpPost]
-        [Route("tab")]
-        //[Authorize(Policy = "PodeGravar")]
-        public async Task<IActionResult> Post([Required]string customerName)
+        [Route("tab")]        
+        public async Task<IActionResult> Post([FromBody]CreateTabViewModel customer)
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var result = await _tabHandler.Handler(new CreateTabCommand(customerName));
+            var result = await _tabHandler.Handler(new CreateTabCommand(customer.CustomerName));
             if (result.Valid)
-                return SuccessResponse(result);
+                return SuccessResponse(result.Value);
 
             return ErrorResponse(new string[1] { result.Error });
         }
 
         [HttpPut]
         [Route("tab/addItem")]
-        public async Task<IActionResult> AddItem(AddItemViewModel model)
+        public async Task<IActionResult> AddItem([FromBody]AddItemViewModel model)
         {
             try
             {
-
                 if (!ModelState.IsValid) return BadRequest();
 
-                var result = await _tabHandler.Handler(new AddItemTabCommand(model.TabId, model.ItemId, model.Quantity));
+                var result = await _tabHandler.Handler(new AddItemTabCommand(model.TabId, model.ItemId));
                 if (result.Valid)
-                    return SuccessResponse(result);
+                    return SuccessResponse(result.Value);
 
                 return ErrorResponse(new string[1] { result.Error });
             }
@@ -68,28 +73,28 @@ namespace DBPub.API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("tab/close")]
-        public async Task<IActionResult> Close([Required]Guid tabId)
+        public async Task<IActionResult> Close([FromBody]TabViewModel tab)
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var result = await _tabHandler.Handler(new CloseTabCommand(tabId));
+            var result = await _tabHandler.Handler(new CloseTabCommand(tab.Id));
             if (result.Valid)
-                return SuccessResponse(result);
+                return SuccessResponse(result.Value);
 
             return ErrorResponse(new string[1] { result.Error });
         }
 
         [HttpPut]
         [Route("tab/reset")]
-        public async Task<IActionResult> Reset([Required]Guid tabId)
+        public async Task<IActionResult> Reset([FromBody]TabViewModel tab)
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            var result = await _tabHandler.Handler(new ResetTabCommand(tabId));
+            var result = await _tabHandler.Handler(new ResetTabCommand(tab.Id));
             if (result.Valid)
-                return SuccessResponse(result);
+                return SuccessResponse(result.Value);
 
             return ErrorResponse(new string[1] { result.Error });
         }

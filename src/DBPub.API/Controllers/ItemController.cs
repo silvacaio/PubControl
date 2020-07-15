@@ -19,15 +19,17 @@ namespace DBPub.API.Controllers
             _itemRepository = itemRepository;
         }
 
-        [HttpGet]        
+        [HttpGet]
+        [AllowAnonymous]
         [Route("items")]
-        public IEnumerable<Item> Get()
+        public IActionResult Get()
         {
-            return _itemRepository.GetAll();
+            return SuccessResponse(_itemRepository.GetAll());
         }
 
         [HttpGet]
         [Route("items/{id:guid}")]
+        [AllowAnonymous]
         public Item Get(Guid id)
         {
             return _itemRepository.FindById(id);

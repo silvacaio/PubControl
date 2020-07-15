@@ -12,6 +12,7 @@ using DGPub.Application.Promotions.Handlers;
 using DGPub.Domain.Promotions.Handlers;
 using DGPub.Infra.CrossCutting.Identity.Models;
 using Microsoft.AspNetCore.Http;
+using DGPub.Domain.Helpers.Items;
 
 namespace DGPub.Infra.CrossCutting.IoC
 {
@@ -34,7 +35,12 @@ namespace DGPub.Infra.CrossCutting.IoC
             services.AddScoped<ITabHandler, TabHandler>();
             services.AddScoped<IPromotionHandler, PromotionHandler>();
 
-            services.AddScoped<IRunPromotionHandler, BeerWithJuicePromotion>();       
+            services.AddScoped<IRunPromotionHandler, BeerWithJuicePromotion>();
+            services.AddScoped<IRunPromotionHandler, LimitJuicePromotion>();
+            services.AddScoped<IRunPromotionHandler, FreeWaterWhenBrandyAndBeerPromotion>();
+
+            //cahce
+            services.AddTransient<IItemCache, ItemMemoryCache>(); 
 
             // Infra - Identity            
             services.AddScoped<IUser, AspNetUser>();

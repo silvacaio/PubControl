@@ -1,0 +1,49 @@
+<div class="content">
+    <div class="formData">
+        <div class="alert" *ngIf="msgs.length > 0">
+            <ul class="list-alert">
+                <li *ngFor="let msg of msgs">{{ msg }}</li>
+            </ul>
+        </div>
+        <div class="header">
+            <div class="form-group">
+                <label>Cliente:</label>
+                <label>{{ customerName }}</label>
+            </div>
+
+            <div class="form-group">
+                <label>Valor:</label>
+                <label>{{ total }}</label>
+            </div>
+
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Item
+                    </th>
+                    <th>
+                        Valor
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let item of items'>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>
+                        <input type="button" value="Adicionar" (click)='addItem(item)' />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="actions">
+            <input type="button" value="Resetar" (click)='resetTab()' />
+            <input type="button" value="Fechar" (click)='closeTab()' />
+        </div>
+    </div>
+</div>

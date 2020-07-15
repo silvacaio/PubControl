@@ -5,11 +5,10 @@ namespace DGPub.Domain.Tabs.Commands
 {
     public class AddItemTabCommand : Command
     {
-        public AddItemTabCommand(Guid tabId, Guid itemId, int quantity)
+        public AddItemTabCommand(Guid tabId, Guid itemId)
         {
             TabId = tabId;
-            ItemId = itemId;
-            Quantity = quantity;
+            ItemId = itemId;            
         }
 
         public Guid TabId { get; private set; }
@@ -18,7 +17,7 @@ namespace DGPub.Domain.Tabs.Commands
 
         public override bool IsValid()
         {
-            return TabId != null && ItemId != null && Quantity > 0;
+            return TabId != null && ItemId != null;
         }
     }
 }

@@ -1,0 +1,46 @@
+<div class="content">
+    <div class="formData">
+        <div class="form-group">
+            <label>Cliente:</label>
+            <label>{{ customerName }}</label>
+        </div>
+
+        <div class="form-group">
+            <label>Valor:</label>
+            <label>{{ total }}</label>
+        </div>
+
+        <div class="form-group">
+            <label>Valor de desconto:</label>
+            <label>{{ totalDiscount }}</label>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Item
+                    </th>
+                    <th>
+                        Valor
+                    </th>                   
+                    <th>
+                        Desconto
+                    </th> 
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor='let item of items'>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.unitPrice }}</td>                   
+                    <td>{{ item.discount }}</td>                   
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="actions">
+            <input type="button" value="Nova comanda" (click)='new()' />            
+        </div>
+
+    </div>
+</div>
