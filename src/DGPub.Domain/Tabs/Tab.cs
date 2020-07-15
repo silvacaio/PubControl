@@ -24,9 +24,13 @@ namespace DGPub.Domain.Tabs
             }
         }
 
-        public decimal TotalDiscount()
+        public decimal TotalDiscount
         {
-            return (Items?.Sum(i => i.Discount)).GetValueOrDefault();
+            get
+            {
+                return (Items?.Sum(i => i.Discount)).GetValueOrDefault();
+            }
+
         }
 
         public void Close()
@@ -37,7 +41,7 @@ namespace DGPub.Domain.Tabs
         public override bool IsValid()
         {
             return !string.IsNullOrWhiteSpace(CustomerName);
-        }        
+        }
 
         public static class TabFactory
         {

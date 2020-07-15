@@ -13,7 +13,7 @@ namespace DGPub.Domain.Tabs.Commands
         public Guid TabId { get; set; }
         public override bool IsValid()
         {
-            return TabId != null;
+            return TabId != Guid.Empty;
         }
     }
 }

@@ -38,10 +38,7 @@ namespace DGPub.Application.Tabs.Handlers
             if (!command.IsValid())
                 return Event<CreateTabEvent>.CreateError("Informe todos os dados obrigatórios");
 
-            var tab = Tab.TabFactory.Create(command.CustomerName);
-
-            if (!tab.IsValid())
-                return Event<CreateTabEvent>.CreateError("Dados inválidos");
+            var tab = Tab.TabFactory.Create(command.CustomerName);      
 
             _tabRepository.Add(tab);
 
@@ -79,7 +76,7 @@ namespace DGPub.Application.Tabs.Handlers
 
         public override Task<Event<UpdatedTabEvent>> Handler(ResetTabCommand command)
         {
-            if (command.IsValid())
+            if (!command.IsValid())
                 return Task.FromResult(Event<UpdatedTabEvent>.CreateError("Não foi possível resetar a comanda"));
 
             //remover todos os itens
@@ -96,7 +93,7 @@ namespace DGPub.Application.Tabs.Handlers
 
         public override Task<Event<InvoiceTabEvent>> Handler(CloseTabCommand command)
         {
-            if (command.IsValid())
+            if (!command.IsValid())
                 return Task.FromResult(Event<InvoiceTabEvent>.CreateError("Não foi possível fechar a comanda"));
 
             var tab = _tabRepository.FindByIdWithItems(command.TabId);
@@ -117,7 +114,7 @@ namespace DGPub.Application.Tabs.Handlers
                 items.Add(new ItemInvoiceEvent(_itemCache.GetName(item.Id), item.UnitPrice, item.Discount));
             }
 
-            return new InvoiceTabEvent(tab.Id, tab.CustomerName, tab.Total, tab.TotalDiscount(), items);
+            return new InvoiceTabEvent(tab.Id, tab.CustomerName, tab.Total, tab.TotalDiscount, items);
         }
     }
 }
