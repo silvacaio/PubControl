@@ -7,9 +7,9 @@ using System;
 using System.Collections.Generic;
 
 namespace DBPub.API.Controllers
-{
-    //[ApiController]   
-    // [Route("api")]
+{   
+    [Route("api")]
+    [AllowAnonymous]
     public class ItemController : BaseController
     {
         private readonly IItemRepository _itemRepository;

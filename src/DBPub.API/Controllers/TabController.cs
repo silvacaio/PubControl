@@ -13,8 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DBPub.API.Controllers
 {
-    [ApiController]
-    [AllowAnonymous]
+    [Route("api")]
     public class TabController : BaseController
     {
         private readonly ITabHandler _tabHandler;
