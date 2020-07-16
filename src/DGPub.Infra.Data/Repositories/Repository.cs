@@ -27,6 +27,7 @@ namespace DGPub.Infra.Data.Repositories
 
         public virtual void Update(TEntity obj)
         {
+            Db.Entry(obj).State = EntityState.Modified;
             DbSet.Update(obj);
         }
 

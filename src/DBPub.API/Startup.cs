@@ -42,6 +42,13 @@ namespace DBPub.API
             // Options para configurações customizadas
             services.AddOptions();
 
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressConsumesConstraintForFormFileParameters = true;
+                options.SuppressInferBindingSourcesForParameters = true;
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             // MVC com restrição de XML e adição de filtro de ações.
             services.AddMvc(config =>
             {

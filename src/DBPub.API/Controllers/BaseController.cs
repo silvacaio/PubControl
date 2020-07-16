@@ -1,6 +1,8 @@
 ﻿using DGPub.Domain.Core;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DBPub.API.Controllers
 {
@@ -16,6 +18,20 @@ namespace DBPub.API.Controllers
         }
 
         protected Guid UserId { get; set; }
+
+        protected IActionResult ModelStateError()
+        {
+            HashSet<string> errors = new HashSet<string>();
+            foreach (var modelState in ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    errors.Add(error.ErrorMessage);
+                }
+            }
+
+            return ErrorResponse(errors.ToArray());
+        }
 
         protected IActionResult SuccessResponse(object result = null)
         {

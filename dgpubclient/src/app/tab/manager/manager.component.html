@@ -1,8 +1,8 @@
 <div class="content">
     <div class="formData">
-        <div class="alert" *ngIf="msgs.length > 0">
+        <div class="alert" *ngIf="alerts.length > 0">
             <ul class="list-alert">
-                <li *ngFor="let msg of msgs">{{ msg }}</li>
+                <li *ngFor="let msg of alerts">{{ msg }}</li>
             </ul>
         </div>
         <div class="header">

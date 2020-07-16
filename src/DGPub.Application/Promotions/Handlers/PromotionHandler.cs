@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace DGPub.Application.Promotions.Handlers
 {
-    public class PromotionHandler : IPromotionHandler
+    public class PromotionHandler : CommandHandler, IPromotionHandler
     {
         private readonly IEnumerable<IRunPromotionHandler> _promotions;
-        private readonly ITabRepository _tabRepository;
+        private readonly ITabRepository _tabRepository;        
 
-        public PromotionHandler(IEnumerable<IRunPromotionHandler> promotions, ITabRepository tabRepository)
+        public PromotionHandler(IEnumerable<IRunPromotionHandler> promotions, ITabRepository tabRepository, IUnitOfWork uow) : base(uow)
         {
             _promotions = promotions;
             _tabRepository = tabRepository;
@@ -37,6 +37,9 @@ namespace DGPub.Application.Promotions.Handlers
                 if (!string.IsNullOrWhiteSpace(result.Value.Alert))
                     promotionsAlert.Add(result.Value.Alert);
             }
+
+            if(!Commit())
+                return Event<PromotionEvent>.CreateSuccess(new PromotionEvent(promotionsAlert));
 
             return Event<PromotionEvent>.CreateSuccess(new PromotionEvent(promotionsAlert));
         }

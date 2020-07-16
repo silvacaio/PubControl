@@ -11,5 +11,6 @@ namespace DGPub.Domain.Tabs.Repositories
         IEnumerable<Tab> GetAllOpen(bool withItems);
         void RemoveAllItem(Guid tabId);
         Tab FindByIdWithItems(Guid id);
+        Tab FindOpenByIdWithItems(Guid id);
     }
 }

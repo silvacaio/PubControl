@@ -71,7 +71,7 @@ namespace DGPub.Application.Tabs.Handlers
                 items.Add(new UpdateTabItemEvent(_itemCache.GetName(item.Id), item.TotalItem(), item.HasDiscount()));
             }
 
-            return new UpdatedTabEvent(tab.Id, tab.CustomerName, items, alerts);
+            return new UpdatedTabEvent(tab.Id, tab.CustomerName, tab.Total, items, alerts);
         }
 
         public override Task<Event<UpdatedTabEvent>> Handler(ResetTabCommand command)
@@ -85,10 +85,10 @@ namespace DGPub.Application.Tabs.Handlers
             if (!Commit())
                 return Task.FromResult(Event<UpdatedTabEvent>.CreateError("Não foi possível resetar a comanda"));
 
-            var tabUpdated = _tabRepository.FindById(command.TabId);
+            var tabUpdated = _tabRepository.FindByIdWithItems(command.TabId);
 
             return Task.FromResult(Event<UpdatedTabEvent>.CreateSuccess(
-                new UpdatedTabEvent(tabUpdated.Id, tabUpdated.CustomerName)));
+                new UpdatedTabEvent(tabUpdated.Id, tabUpdated.CustomerName, tabUpdated.Total)));
         }
 
         public override Task<Event<InvoiceTabEvent>> Handler(CloseTabCommand command)
@@ -111,7 +111,7 @@ namespace DGPub.Application.Tabs.Handlers
             var items = new HashSet<ItemInvoiceEvent>();
             foreach (var item in tab?.Items)
             {
-                items.Add(new ItemInvoiceEvent(_itemCache.GetName(item.Id), item.UnitPrice, item.Discount));
+                items.Add(new ItemInvoiceEvent(_itemCache.GetName(item.ItemId), item.UnitPrice, item.Discount));
             }
 
             return new InvoiceTabEvent(tab.Id, tab.CustomerName, tab.Total, tab.TotalDiscount, items);

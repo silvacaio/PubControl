@@ -15,8 +15,7 @@ export class ManagerComponent implements OnInit {
 
   public tabId: String;
   public customerName: String;
-  public total: Number;
-  public msgs: any[] = [];
+  public total: Number;  
   public alerts: any[] = [];
 
   public items: Item[];
@@ -30,16 +29,15 @@ export class ManagerComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // this.route.params.subscribe(
-    //   params => {
-    //     this.tabId = params['id'];
-    //     this.loadTab(this.tabId);
-    //   }
-    // );
+    this.route.params.subscribe(
+      params => {
+        this.tabId = params['id'];
+        this.loadTab(this.tabId);
+      }
+    );
 
     this.itemService.getAll()
-      .subscribe(items => this.items = items,
-        error => this.msgs);
+      .subscribe(items => this.items = items);
   }
 
   loadTab(id: String) {
@@ -48,7 +46,8 @@ export class ManagerComponent implements OnInit {
         tab => {
           this.customerName = tab.customerName,
             this.total = tab.total
-        }
+        },
+        fail => { this.onError(fail) }
       );
   }
 
@@ -74,7 +73,7 @@ export class ManagerComponent implements OnInit {
     this.tabService.reset(editTab)
       .subscribe(
         tab => {
-          this.customerName = tab.customerName,
+            this.customerName = tab.customerName,
             this.total = tab.total,
             this.alerts = tab.alerts
         }
@@ -83,6 +82,10 @@ export class ManagerComponent implements OnInit {
 
   closeTab() {
     this.router.navigate(['/close', this.tabId]);
+  }
+
+  onError(error: any){    
+    this.router.navigate(['/create']);
   }
 
 }

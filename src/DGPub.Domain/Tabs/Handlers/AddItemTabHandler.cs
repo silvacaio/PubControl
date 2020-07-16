@@ -32,8 +32,8 @@ namespace DGPub.Domain.Tabs.Handlers
             if (!Commit())
                 return Task.FromResult(Event<UpdatedTabEvent>.CreateError("Falha ao adicionar item na comanda"));
 
-            var tab = _tabRepository.FindById(command.TabId);
-            return Task.FromResult(Event<UpdatedTabEvent>.CreateSuccess(new UpdatedTabEvent(tab.Id, tab.CustomerName)));
+            var tab = _tabRepository.FindByIdWithItems(command.TabId);
+            return Task.FromResult(Event<UpdatedTabEvent>.CreateSuccess(new UpdatedTabEvent(tab.Id, tab.CustomerName, tab.Total)));
         }
 
         public Event<None> AddItem(AddItemTabCommand command)

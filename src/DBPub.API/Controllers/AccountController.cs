@@ -25,11 +25,11 @@ namespace DBPub.API.Controllers
                     UserManager<ApplicationUser> userManager,
                     SignInManager<ApplicationUser> signInManager,
                     TokenDescriptor tokenDescriptor,
-                    IUser user                              
+                    IUser user
             ) : base(user)
         {
             _userManager = userManager;
-            _signInManager = signInManager;            
+            _signInManager = signInManager;
             _tokenDescriptor = tokenDescriptor;
         }
 
@@ -44,9 +44,7 @@ namespace DBPub.API.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                {
-                    return ErrorResponse("Dados inválidos");
-                }
+                    return ModelStateError();
 
                 var user = new ApplicationUser { UserName = model.Name, Email = model.Email };
 
@@ -72,9 +70,7 @@ namespace DBPub.API.Controllers
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
             if (!ModelState.IsValid)
-            {
-                return ErrorResponse("Dados inválidos");
-            }
+                return ModelStateError();
 
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, true);
 

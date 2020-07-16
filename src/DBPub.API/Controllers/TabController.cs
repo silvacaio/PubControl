@@ -34,9 +34,10 @@ namespace DBPub.API.Controllers
 
         [HttpGet]
         [Route("tab/{id:guid}")]          
-        public Tab Get([Required] Guid id)
+        public IActionResult Get([Required] Guid id)
         {
-            return _tabRepository.FindByIdWithItems(id);
+            var tab = _tabRepository.FindOpenByIdWithItems(id);
+            return tab != null ? SuccessResponse(tab) : ErrorResponse("Comanda não encontrada");
         }
 
         [HttpPost]

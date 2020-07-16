@@ -18,7 +18,7 @@ namespace DGPub.Application.Promotions.Handlers
         private readonly IItemRepository _itemRepository;
         private readonly IItemTabRepository _itemTabRepository;
 
-        public readonly decimal _valuePromotionBeer = 3;
+        public readonly decimal _valuePromotionBeer = 2;
         public readonly string _description = "Na compra de 1 cerveja e 1 suco, a cerveja sai por R$3,00";
         public readonly bool _showAlert = false;
 
