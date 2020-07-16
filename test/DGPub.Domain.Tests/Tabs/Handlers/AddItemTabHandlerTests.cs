@@ -120,7 +120,7 @@ namespace DGPub.Domain.Tests.Tabs.Handlers
 
             var tab = Tab.TabFactory.Create("ClearSale");
 
-            _mockTabRepository.Setup(s => s.FindById(tab.Id)).Returns(tab);
+            _mockTabRepository.Setup(s => s.FindByIdWithItems(tab.Id)).Returns(tab);
 
             //Act
             var result = await _handler.Handler(new AddItemTabCommand(tab.Id, item.Id));

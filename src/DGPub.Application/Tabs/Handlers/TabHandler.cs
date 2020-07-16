@@ -53,10 +53,10 @@ namespace DGPub.Application.Tabs.Handlers
             var result = await base.Handler(command);
 
             if (!result.Valid)
-                return result;
+                return result;        
 
             var resultPromotion = await _promotionHandler
-                .Handler(new Domain.Promotions.Commands.PromotionCommand(result.Value.Id));
+                .Handler(new Domain.Promotions.Commands.PromotionCommand(result.Value.Id));       
 
             return Event<UpdatedTabEvent>.CreateSuccess(CreateTabUpdateEvent(command.TabId, resultPromotion.Value?.Alerts));
         }

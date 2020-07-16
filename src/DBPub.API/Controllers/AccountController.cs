@@ -76,7 +76,7 @@ namespace DBPub.API.Controllers
 
             if (result.Succeeded)
             {
-                var response = GerarTokenUsuario(model);
+                var response = await GerarTokenUsuario(model);
                 return SuccessResponse(response);
             }
 

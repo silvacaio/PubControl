@@ -38,7 +38,7 @@ namespace DGPub.Application.Promotions.Handlers
 
             var beers = command.Tab.Items.Where(i => i.ItemId == beerItem.Id);
 
-            if ((beers.Count() > 0 && beers.All(i => i.UnitPrice > _valuePromotionBeer)) &&
+            if ((beers.Count() > 0 && beers.All(i => i.TotalItem() > _valuePromotionBeer)) &&
                 command.Tab.Items.Any(i => i.ItemId == juiceItem.Id))
             {
                 var beer = command.Tab.Items.FirstOrDefault(i => i.ItemId == beerItem.Id);
@@ -49,6 +49,6 @@ namespace DGPub.Application.Promotions.Handlers
             }
 
             return Task.FromResult(Event<ResultPromotionEvent>.CreateSuccess(new ResultPromotionEvent(false)));
-        }      
+        }
     }
 }

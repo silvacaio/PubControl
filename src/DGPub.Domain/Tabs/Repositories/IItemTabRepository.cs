@@ -1,5 +1,6 @@
 ﻿using DGPub.Domain.Core;
 using System;
+using System.Collections.Generic;
 
 namespace DGPub.Domain.Tabs.Repositories
 {
@@ -7,5 +8,6 @@ namespace DGPub.Domain.Tabs.Repositories
     {
         ItemTab FindByIdAndTab(Guid itemId, Guid tabId);
         void DeleteByTabId(Guid tabId);
+        List<ItemTab> FindByTab(Guid tabId);
     }
 }

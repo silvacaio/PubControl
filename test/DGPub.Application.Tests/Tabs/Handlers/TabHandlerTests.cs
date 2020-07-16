@@ -90,7 +90,7 @@ namespace DGPub.Application.Tabs.Handlers.Tests
 
             var name = "ClearSale";
             var tab = Tab.TabFactory.Create(name);
-            _mockTabRepository.Setup(s => s.FindById(tab.Id)).Returns(tab);
+            _mockTabRepository.Setup(s => s.FindByIdWithItems(tab.Id)).Returns(tab);
 
             //Act
             var result = await _handler.Handler(new ResetTabCommand(tab.Id));

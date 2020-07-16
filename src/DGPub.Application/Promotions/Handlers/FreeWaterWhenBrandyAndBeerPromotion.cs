@@ -13,7 +13,7 @@ namespace DGPub.Application.Promotions.Handlers
     public class FreeWaterWhenBrandyAndBeerPromotion : IRunPromotionHandler
     {
         private readonly IItemRepository _itemRepository;
-        private readonly IItemTabRepository _itemTabRepository;      
+        private readonly IItemTabRepository _itemTabRepository;
 
         public readonly string _description = "Na compra 3 conhaques mais 2 cervejas, poderá pedir uma água de graça";
         public readonly bool _showAlert = false;
@@ -26,7 +26,7 @@ namespace DGPub.Application.Promotions.Handlers
 
         public Task<Event<ResultPromotionEvent>> Handler(PromotionRunCommand command)
         {
-            if(!command.IsValid())
+            if (!command.IsValid())
                 return Task.FromResult(Event<ResultPromotionEvent>.CreateSuccess(new ResultPromotionEvent(false)));
 
             var beerItem = _itemRepository.GetByName("cerveja");
@@ -35,7 +35,7 @@ namespace DGPub.Application.Promotions.Handlers
 
             //já ganhou a água de graça
             if (command.Tab.Items.Any(a => a.ItemId == water.Id && a.TotalItem() == 0))
-                return Task.FromResult(Event<ResultPromotionEvent>.CreateSuccess(new ResultPromotionEvent(false, _description)));
+                return Task.FromResult(Event<ResultPromotionEvent>.CreateSuccess(new ResultPromotionEvent(false)));
 
             var hasThreeBrandy = command.Tab.Items.Where(i => i.ItemId == brandyItem.Id).Count() >= 3;
             var hasTwoBeer = command.Tab.Items.Where(i => i.ItemId == beerItem.Id).Count() >= 2;

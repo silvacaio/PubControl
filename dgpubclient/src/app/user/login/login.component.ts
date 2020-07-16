@@ -45,8 +45,8 @@ export class LoginComponent implements OnInit {
     this.loginForm.reset();
     this.msgs = [];
 
-    localStorage.setItem('dgpub.token', response.result.access_token);
-    localStorage.setItem('dgpub.user', JSON.stringify(response.result.user));
+    localStorage.setItem('dgpub.token', response.access_token);
+    localStorage.setItem('dgpub.user', JSON.stringify(response.user));
 
     this.router.navigate(['/create']);
   }

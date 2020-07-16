@@ -29,6 +29,11 @@ namespace DGPub.Domain.Tabs
             return Discount > 0;
         }
 
+        public void AddDiscount(decimal value)
+        {
+            Discount = value;
+        }
+
         public static class ItemTabFactory
         {
             public static ItemTab Create(Guid tabId, Guid itemId, decimal unitPrice)

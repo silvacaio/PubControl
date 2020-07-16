@@ -10,6 +10,7 @@ namespace DGPub.Infra.Data.UoW
         public UnitOfWork(DGPubContext context)
         {
             _context = context;
+
         }
 
         public bool Commit()

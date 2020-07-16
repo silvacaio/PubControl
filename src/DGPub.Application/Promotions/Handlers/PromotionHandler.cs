@@ -12,9 +12,9 @@ namespace DGPub.Application.Promotions.Handlers
     public class PromotionHandler : CommandHandler, IPromotionHandler
     {
         private readonly IEnumerable<IRunPromotionHandler> _promotions;
-        private readonly ITabRepository _tabRepository;        
+        private readonly ITabRepository _tabRepository;
 
-        public PromotionHandler(IEnumerable<IRunPromotionHandler> promotions, ITabRepository tabRepository, IUnitOfWork uow) : base(uow)
+        public PromotionHandler(IEnumerable<IRunPromotionHandler> promotions, IUnitOfWork uow, ITabRepository tabRepository) : base(uow)
         {
             _promotions = promotions;
             _tabRepository = tabRepository;
@@ -38,7 +38,7 @@ namespace DGPub.Application.Promotions.Handlers
                     promotionsAlert.Add(result.Value.Alert);
             }
 
-            if(!Commit())
+            if (!Commit())
                 return Event<PromotionEvent>.CreateSuccess(new PromotionEvent(promotionsAlert));
 
             return Event<PromotionEvent>.CreateSuccess(new PromotionEvent(promotionsAlert));

@@ -5,6 +5,7 @@ using DGPub.Domain.Tabs;
 using DGPub.Domain.Tabs.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Threading.Tasks;
 
 namespace DGPub.Application.Tests.Promotions.Handlers

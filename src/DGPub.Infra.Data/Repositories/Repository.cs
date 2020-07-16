@@ -16,7 +16,7 @@ namespace DGPub.Infra.Data.Repositories
 
         protected Repository(DGPubContext context)
         {
-            Db = context;
+            Db = context;         
             DbSet = Db.Set<TEntity>();
         }
 
@@ -26,8 +26,7 @@ namespace DGPub.Infra.Data.Repositories
         }
 
         public virtual void Update(TEntity obj)
-        {
-            Db.Entry(obj).State = EntityState.Modified;
+        {            
             DbSet.Update(obj);
         }
 
@@ -43,7 +42,7 @@ namespace DGPub.Infra.Data.Repositories
 
         public virtual IEnumerable<TEntity> GetAll()
         {
-            return DbSet.ToList();
+            return DbSet.AsNoTracking().ToList();
         }
 
         public virtual void Delete(Guid id)

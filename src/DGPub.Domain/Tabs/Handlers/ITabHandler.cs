@@ -17,12 +17,12 @@ namespace DGPub.Domain.Tabs.Handlers
         public ITabHandler(IUnitOfWork uow, IItemRepository itemRepository, IItemTabRepository itemTabRepository, ITabRepository tabRepository)
             : base(uow, itemRepository, itemTabRepository, tabRepository)
         {
-        }
+        }        
 
         public abstract Task<Event<CreateTabEvent>> Handler(CreateTabCommand command);
 
         public abstract Task<Event<UpdatedTabEvent>> Handler(ResetTabCommand command);
 
-        public abstract Task<Event<InvoiceTabEvent>> Handler(CloseTabCommand command);
+        public abstract Task<Event<InvoiceTabEvent>> Handler(CloseTabCommand command);        
     }
 }

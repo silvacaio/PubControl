@@ -23,7 +23,7 @@ namespace DBPub.API
     public class Startup
     {
         public Startup(IConfiguration configuration)
-        {            
+        {
             Configuration = configuration;
         }
 
@@ -34,7 +34,9 @@ namespace DBPub.API
         {
             // Contexto do EF para o Identity
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             // Configurações de Autenticação, Autorização e JWT.
             services.AddMvcSecurity(Configuration);
