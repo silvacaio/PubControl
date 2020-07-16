@@ -17,7 +17,7 @@ namespace DGPub.Domain.Tabs.Commands
 
         public override bool IsValid()
         {
-            return TabId != null && ItemId != null;
+            return TabId != Guid.Empty && ItemId != Guid.Empty;
         }
     }
 }

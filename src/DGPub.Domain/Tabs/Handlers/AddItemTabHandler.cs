@@ -25,7 +25,9 @@ namespace DGPub.Domain.Tabs.Handlers
             if (!command.IsValid())
                 return Task.FromResult(Event<UpdatedTabEvent>.CreateError("Informe todos os dados obrigatórios"));
 
-            AddItem(command);
+            var result = AddItem(command);
+            if (!result.Valid)
+                return Task.FromResult(Event<UpdatedTabEvent>.CreateError("Falha ao adicionar item na comanda"));
 
             if (!Commit())
                 return Task.FromResult(Event<UpdatedTabEvent>.CreateError("Falha ao adicionar item na comanda"));
@@ -34,7 +36,7 @@ namespace DGPub.Domain.Tabs.Handlers
             return Task.FromResult(Event<UpdatedTabEvent>.CreateSuccess(new UpdatedTabEvent(tab.Id, tab.CustomerName)));
         }
 
-        protected Event<None> AddItem(AddItemTabCommand command)
+        public Event<None> AddItem(AddItemTabCommand command)
         {
             var item = _itemRepository.FindById(command.ItemId);
             if (item == null)
@@ -42,9 +44,6 @@ namespace DGPub.Domain.Tabs.Handlers
 
             var itemTab = ItemTab.ItemTabFactory
                 .Create(command.TabId, command.ItemId, item.Price);
-
-            if (!itemTab.IsValid())
-                return Event<None>.CreateError("Falha ao adicionar item na comanda");
 
             _itemTabRepository.Add(itemTab);
 

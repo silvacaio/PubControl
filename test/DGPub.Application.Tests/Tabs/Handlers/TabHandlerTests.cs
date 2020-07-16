@@ -46,7 +46,7 @@ namespace DGPub.Application.Tabs.Handlers.Tests
         }
 
         [TestMethod()]
-        public async Task CreateTab_CommandInvalid_DontCreate()
+        public async Task CreateTab_CommandInvalid_Invalid()
         {
             //Arrange                     
 
@@ -72,7 +72,7 @@ namespace DGPub.Application.Tabs.Handlers.Tests
         }
 
         [TestMethod()]
-        public async Task ResetTab_CommandInvalid_DontReset()
+        public async Task ResetTab_CommandInvalid_Invalid()
         {
             //Arrange                     
 
@@ -102,7 +102,7 @@ namespace DGPub.Application.Tabs.Handlers.Tests
         }
 
         [TestMethod()]
-        public async Task CloseTab_CommandInvalid_DontReset()
+        public async Task CloseTab_CommandInvalid_Invalid()
         {
             //Arrange                     
 
