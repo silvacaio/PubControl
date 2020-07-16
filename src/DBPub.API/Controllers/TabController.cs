@@ -49,7 +49,7 @@ namespace DBPub.API.Controllers
             if (result.Valid)
                 return SuccessResponse(result.Value);
 
-            return ErrorResponse(new string[1] { result.Error });
+            return ErrorResponse(result.Error);
         }
 
         [HttpPut]
@@ -64,11 +64,11 @@ namespace DBPub.API.Controllers
                 if (result.Valid)
                     return SuccessResponse(result.Value);
 
-                return ErrorResponse(new string[1] { result.Error });
+                return ErrorResponse(result.Error);
             }
             catch (Exception e)
             {
-                return ErrorResponse(new string[1] { e.Message });
+                return ErrorResponse(e.Message);
             }
         }
 
@@ -82,7 +82,7 @@ namespace DBPub.API.Controllers
             if (result.Valid)
                 return SuccessResponse(result.Value);
 
-            return ErrorResponse(new string[1] { result.Error });
+            return ErrorResponse(result.Error);
         }
 
         [HttpPut]
@@ -95,7 +95,7 @@ namespace DBPub.API.Controllers
             if (result.Valid)
                 return SuccessResponse(result.Value);
 
-            return ErrorResponse(new string[1] { result.Error });
+            return ErrorResponse(result.Error);
         }
 
     }
