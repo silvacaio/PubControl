@@ -12,7 +12,7 @@ export class ItemService extends BaseService {
     getAll(): Observable<Item[]> {
       
         let response = this.http
-            .get(this.UrlServiceV1 + "items")
+            .get(this.UrlServiceV1 + "api/items")
             .pipe(map(super.extractData))
             .pipe(catchError(super.serviceError));
   

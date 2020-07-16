@@ -16,7 +16,7 @@ export class TabService extends BaseService {
     create(create: CreateTab): Observable<Tab> {
 
         let response = this.http
-            .post(this.UrlServiceV1 + "tab", create, super.getAuthHeaderJson())
+            .post(this.UrlServiceV1 + "api/tab", create, super.getAuthHeaderJson())
             .pipe(map(super.extractData))
             .pipe(catchError(super.serviceError));
 
@@ -26,7 +26,7 @@ export class TabService extends BaseService {
     get(id: String): Observable<Tab> {
 
         let response = this.http
-            .get(this.UrlServiceV1 + "tab/" + id, super.getAuthHeaderJson())
+            .get(this.UrlServiceV1 + "api/tab/" + id, super.getAuthHeaderJson())
             .pipe(map(super.extractData))
             .pipe(catchError(super.serviceError));
 
@@ -36,7 +36,7 @@ export class TabService extends BaseService {
     addItem(item: ItemTab): Observable<Tab> {
 
         let response = this.http
-            .put(this.UrlServiceV1 + "tab/addItem", item, super.getAuthHeaderJson())
+            .put(this.UrlServiceV1 + "api/tab/addItem", item, super.getAuthHeaderJson())
             .pipe(map(super.extractData))
             .pipe(catchError(super.serviceError));
 
@@ -46,7 +46,7 @@ export class TabService extends BaseService {
     close(tab: EditTab): Observable<ClosedTab> {
 
         let response = this.http
-            .put(this.UrlServiceV1 + "tab/close", tab, super.getAuthHeaderJson())
+            .put(this.UrlServiceV1 + "api/tab/close", tab, super.getAuthHeaderJson())
             .pipe(map(super.extractData))
             .pipe(catchError(super.serviceError));
 
@@ -56,7 +56,7 @@ export class TabService extends BaseService {
     reset(tab: EditTab): Observable<Tab> {
 
         let response = this.http
-            .put(this.UrlServiceV1 + "tab/reset", tab, super.getAuthHeaderJson())
+            .put(this.UrlServiceV1 + "api/tab/reset", tab, super.getAuthHeaderJson())
             .pipe(map(super.extractData))
             .pipe(catchError(super.serviceError));
 
