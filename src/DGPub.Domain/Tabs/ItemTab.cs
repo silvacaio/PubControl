@@ -27,12 +27,7 @@ namespace DGPub.Domain.Tabs
         public bool HasDiscount()
         {
             return Discount > 0;
-        }
-
-        public void AddDiscount(decimal value)
-        {
-            Discount = value;
-        }
+        }             
 
         public static class ItemTabFactory
         {
