@@ -2,7 +2,7 @@
 
 Primeiro passo para o desenvolvimento do teste foi entender as solicitações e os requisitos que estavam descritos na documentação.
 Para inicio de desenvolvimento, foi escolhido o framework .net 2.1. 
-Seguindo uma arquitetura que já tenho o domínio, inicialmente foi realizada toda a estruração da sln, a fim de se obter organizar de maneira satisfatória a solução.
+Seguindo uma arquitetura que já tenho o domínio, inicialmente foi realizada toda a estruração da sln, a fim de se organizar de maneira satisfatória a solução.
 Com base nas orientações do DDD, o projeto foi iniciado através da modelagem dos domínios ricos. Foi utilizado o padrão de Factories nos dominios, para garantir a criação de modelos  validos.
 O segundo projeto a ser desenvolvido, foi o Application. Este projeto contém algumas regras de negócios especificas deste projeto. Exemplo das promoções, onde tendo isto nesta camada, ficaria flexivel o desenvolvimento de promoções de outros estabelecimentos.
 Após, foram desenvolvidos os projetos auxilires (Ioc, Identity e Data).
